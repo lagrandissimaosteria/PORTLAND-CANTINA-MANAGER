@@ -60,7 +60,12 @@ function _lsKey(k){ return CONFIG.lsPrefix + k; }
     // Locali che passano da lsPrefix "cm_" a uno proprio ("lg_", "pt_"): le chiavi
     // già scritte restano sotto "cm_*" e diventerebbero orfane. Copia una tantum,
     // solo per le chiavi non ancora presenti sotto il nuovo namespace.
-    if(CONFIG.lsPrefix!=="cm_"){
+    // ATTENZIONE: opt-in via CM_CONFIG.migraDaCm. I tre gestionali girano sullo
+    // STESSO dominio (github.io) e quindi condividono localStorage: senza questa
+    // guardia un locale nuovo si copiava addosso i dati "cm_*" di un altro
+    // (Portland ha ereditato 947 movimenti di Lagrandissima). Da abilitare solo
+    // sul locale che quelle chiavi le ha effettivamente scritte.
+    if(CONFIG.lsPrefix!=="cm_" && CONFIG.migraDaCm===true){
       for(let i=localStorage.length-1;i>=0;i--){
         const vecchia=localStorage.key(i);
         if(!vecchia || !vecchia.startsWith("cm_")) continue;
@@ -1286,7 +1291,17 @@ function _syncAlarm(){
   // sbloccare i movimenti finche non arriva un "ok" vero.
   return _syncBadFor() >= _syncGraceMs;
 }
-function _syncBlocked(){ return _syncAlarm() && Date.now() > _syncBypassUntil; }
+function _syncBlocked(){
+  // Database non ancora configurato (url/chiave assenti): non e' un guasto di
+  // sincronizzazione, e' una installazione nuova. Bloccare qui impedirebbe di
+  // arrivare al pannello dove si inseriscono le credenziali.
+  if(_dbNonConfigurato()) return false;
+  return _syncAlarm() && Date.now() > _syncBypassUntil;
+}
+function _dbNonConfigurato(){
+  try{ return !localStorage.getItem(_lsKey("sb_url")) || !localStorage.getItem(_lsKey("sb_key")); }
+  catch(e){ return true; }
+}
 
 function _syncWatch(state,label){
   _syncState=state; _syncLastLabel=label||"";
@@ -1323,7 +1338,7 @@ function _syncEnsureCss(){
 function _syncRenderBanner(){
   if(typeof document==="undefined"||!document.body) return;
   let el=document.getElementById("cm-sync-banner");
-  if(!_syncAlarm()){
+  if(!_syncAlarm() && !_dbNonConfigurato()){
     if(el){ el.remove(); document.body.style.paddingTop=_syncPrevPad||""; _syncBannerSig=""; }
     return;
   }
@@ -1333,13 +1348,22 @@ function _syncRenderBanner(){
   const movN=_unsyncedMovCount();
   const byp = Date.now() < _syncBypassUntil;
   const bypLeft = byp ? Math.ceil((_syncBypassUntil-Date.now())/1000) : 0;
-  const sig=[dur,movN,_pendingOps,byp,_syncLastLabel].join("|");
+  const sig=[dur,movN,_pendingOps,byp,_syncLastLabel,_dbNonConfigurato()].join("|");
   if(el && sig===_syncBannerSig) return;
   _syncBannerSig=sig;
   if(!el){
     el=document.createElement("div"); el.id="cm-sync-banner";
     if(_syncPrevPad===null) _syncPrevPad=document.body.style.paddingTop||"";
     document.body.appendChild(el);
+  }
+  if(_dbNonConfigurato()){
+    el.className="bypass";
+    el.innerHTML='<div class="cm-sb-txt">\u2699\ufe0f DATABASE NON CONFIGURATO'
+      +'<span class="cm-sb-sub">Stai lavorando solo su questo dispositivo. Inserisci URL e chiave Supabase per collegare il gestionale.</span></div>'
+      +'<button class="pri" onclick="openDbConfig()">Configura database</button>'
+      +'<button class="gh" onclick="_syncDownloadBackup()">Scarica backup</button>';
+    try{ document.body.style.paddingTop = el.offsetHeight+"px"; }catch(e){}
+    return;
   }
   el.className = byp ? "bypass" : "";
   el.innerHTML =

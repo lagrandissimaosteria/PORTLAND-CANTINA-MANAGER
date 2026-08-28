@@ -588,6 +588,34 @@ td[ondblclick]:hover{background:rgba(255,159,10,.06)!important}
     serviziGiorno:       { 2:2, 3:2, 4:2, 5:2, 6:2 }
   };
 </script>
+<!-- ── BOOTSTRAP PORTLAND ───────────────────────────────────────────────────
+     Deve stare DOPO CM_CONFIG (usa lsPrefix) e PRIMA di manager.js.
+     1. BONIFICA: i tre gestionali stanno sullo stesso dominio github.io e
+        condividono localStorage. Portland si era copiato addosso le chiavi
+        "cm_*" di Lagrandissima (947 movimenti, 714 bottiglie che non sono
+        suoi). Qui le chiavi dati "pt_*" ereditate vengono azzerate una volta
+        sola: il database di Portland e' vuoto, non c'e' nulla da perdere.
+        Il flag pt_bootstrap impedisce che si ripeta dopo il primo utilizzo.
+     2. SEED: manager.js legge url/chiave da localStorage, non da CM_CONFIG.
+        Senza questo blocco ogni dispositivo andrebbe configurato a mano. -->
+<script>
+  (function(){
+    try{
+      var p = (window.CM_CONFIG && window.CM_CONFIG.lsPrefix) || "pt_";
+      if(!localStorage.getItem(p+"bootstrap")){
+        ["wines","movements","orders","fallate","soglie","meta","backup",
+         "local_backup","version","ledger","settings","locale"].forEach(function(k){
+          localStorage.removeItem(p+k);
+        });
+        localStorage.setItem(p+"bootstrap","2026-08-28");
+      }
+      if(!localStorage.getItem(p+"sb_url"))
+        localStorage.setItem(p+"sb_url","https://ixhxkqhggskmfdbzbdii.supabase.co");
+      if(!localStorage.getItem(p+"sb_key"))
+        localStorage.setItem(p+"sb_key","sb_publishable_XahUMQq5VMlOfo3xYFiPUQ_3sMR7wzW");
+    }catch(e){ /* storage off: si configura dal pannello Impostazioni */ }
+  })();
+</script>
 <script src="manager.js"></script>
 
 <!-- NOTE VELOCE MODAL -->
