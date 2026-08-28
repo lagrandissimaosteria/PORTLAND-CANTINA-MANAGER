@@ -602,12 +602,18 @@ td[ondblclick]:hover{background:rgba(255,159,10,.06)!important}
   (function(){
     try{
       var p = (window.CM_CONFIG && window.CM_CONFIG.lsPrefix) || "pt_";
-      if(!localStorage.getItem(p+"bootstrap")){
-        ["wines","movements","orders","fallate","soglie","meta","backup",
-         "local_backup","version","ledger","settings","locale"].forEach(function(k){
-          localStorage.removeItem(p+k);
+      if(localStorage.getItem(p+"bootstrap")!=="2026-08-28b"){
+        // Si cancella TUTTO il namespace pt_ per prefisso: elencare le singole
+        // chiavi era fragile (alert_soglie, forn_emails, t9... si dimenticano),
+        // e il database di Portland e' vuoto, quindi non c'e' nulla da salvare.
+        // Si preservano solo le credenziali, che non sono dati di cantina.
+        var url=localStorage.getItem(p+"sb_url"), key=localStorage.getItem(p+"sb_key");
+        Object.keys(localStorage).forEach(function(k){
+          if(k.indexOf(p)===0) localStorage.removeItem(k);
         });
-        localStorage.setItem(p+"bootstrap","2026-08-28");
+        if(url) localStorage.setItem(p+"sb_url",url);
+        if(key) localStorage.setItem(p+"sb_key",key);
+        localStorage.setItem(p+"bootstrap","2026-08-28b");
       }
       if(!localStorage.getItem(p+"sb_url"))
         localStorage.setItem(p+"sb_url","https://ixhxkqhggskmfdbzbdii.supabase.co");
