@@ -10572,8 +10572,31 @@ var _tfHistTab  = "tutti";         // tutti | inviati | ricevuti
 var _tfOpen     = new Set();       // gruppi storico espansi (transferId|dir)
 
 function _tfNorm(s){ return (s==null?"":String(s)).toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,""); }
+// Una referenza gia' presente ma incompleta (creata da un manifesto vecchio, o
+// a mano in fretta) va ARRICCHITA con i dati che arrivano, senza mai sovrascrivere
+// un valore gia' inserito: il locale ricevente e' padrone dei propri prezzi.
+function _tfArricchisci(w,line){
+  const out={...w};
+  const vuoto=v=>v===undefined||v===null||String(v).trim()==="";
+  ["distributore","produttore","annata","vitigni","tipologia","regione","nazione","zona"].forEach(k=>{
+    if(vuoto(out[k]) && !vuoto(line[k])) out[k]=k==="vitigni"?_normVitigni(line[k]):line[k];
+  });
+  if(!(parseFloat(out.formato)>0) && parseFloat(line.formato)>0) out.formato=parseFloat(line.formato);
+  if(!(parseInt(out.iva)>0) && parseInt(line.iva)>0) out.iva=parseInt(line.iva);
+  [["prezzoCarta","prezzoCarta"],["prezzoCalice","prezzoCalice"],["prezzoAcq","prezzoAcq"]].forEach(([k,src])=>{
+    if(!(parseFloat(out[k])>0) && parseFloat(line[src])>0) out[k]=parseFloat(line[src]);
+  });
+  if(vuoto(out.nazione)) out.nazione="Italia";
+  return out;
+}
 function _transferMatchKey(o){
-  return [(o.produttore||"").trim().toLowerCase(),(o.nome||"").trim().toLowerCase(),(o.annata||"").toString().trim().toLowerCase()].join("|");
+  // Il FORMATO fa parte dell'identita' della referenza: senza, un Magnum in
+  // arrivo si fondeva con la 0.75 omonima, sommando giacenze e mescolando lotti
+  // a prezzi diversi (stesso difetto trovato sul Barolo Le Coste 2020).
+  return [(o.produttore||"").trim().toLowerCase(),
+          (o.nome||"").trim().toLowerCase(),
+          (o.annata||"").toString().trim().toLowerCase(),
+          (parseFloat(o.formato)||0.75).toString()].join("|");
 }
 function _b64EncodeUtf8(str){ return btoa(unescape(encodeURIComponent(str))); }
 function _b64DecodeUtf8(b64){ return decodeURIComponent(escape(atob(b64))); }
@@ -10854,9 +10877,15 @@ function _tfLotsSnapshot(w,qty){
   return {snap,upd};
 }
 function _tfManifestLine(w,qty,snap){
-  return {nome:w.nome,produttore:w.produttore||"",annata:w.annata||"",vitigni:w.vitigni||"",tipologia:w.tipologia||"Rosso",
+  // Deve trasportare gli STESSI campi di _tfSchedaLine: prima mancavano
+  // distributore, formato e prezzoCalice, quindi il locale ricevente creava
+  // una scheda monca (distributore vuoto, formato forzato a 0.75).
+  return {nome:w.nome,produttore:w.produttore||"",distributore:w.distributore||"",
+    annata:w.annata||"",vitigni:w.vitigni||"",tipologia:w.tipologia||"Rosso",
+    formato:parseFloat(w.formato)||0.75,
     regione:w.regione||"",nazione:w.nazione||"Italia",zona:w.zona||"",iva:parseInt(w.iva)||22,
-    prezzoCarta:parseFloat(w.prezzoCarta)||0,qty,lots:snap};
+    prezzoAcq:parseFloat(w.prezzoAcq)||0,
+    prezzoCarta:parseFloat(w.prezzoCarta)||0,prezzoCalice:parseFloat(w.prezzoCalice)||0,qty,lots:snap};
 }
 function _tfGenera(){
   if(!_syncGate("Carico da fattura")) return;
@@ -11022,15 +11051,23 @@ function _tfConfermaRicevi(){
     notify("⚠️ Trasferimento già ricevuto","err"); return;
   }
   if(man.mode==="scheda"){
-    let clonate=0, presenti=0;
+    let clonate=0, presenti=0, arricchite=0;
     man.lines.forEach(line=>{
       if(!line||!line.nome) return;
       const key=_transferMatchKey(line);
-      if(wines.some(w=>_transferMatchKey(w)===key)){ presenti++; return; }
+      const idx=wines.findIndex(w=>_transferMatchKey(w)===key);
+      if(idx>=0){
+        // Gia' presente: non si duplica, ma si completano i campi rimasti vuoti.
+        const prima=JSON.stringify(wines[idx]);
+        const dopo=_tfArricchisci(wines[idx],line);
+        if(JSON.stringify(dopo)!==prima){ wines=wines.map((x,i)=>i===idx?dopo:x); arricchite++; }
+        presenti++; return;
+      }
       wines=[...wines,_tfSchedaCreate(line)]; clonate++;
     });
-    if(clonate===0){ notify(`📄 Nessuna scheda nuova: ${presenti} già presenti`); }
-    else { scheduleSave(); clearTimeout(saveTimer); _flushSave(); notify(`📄 ${clonate} schede clonate${presenti?` · ${presenti} già presenti`:""}`); }
+    const coda=(presenti?` · ${presenti} già presenti`:"")+(arricchite?` · ${arricchite} completate`:"");
+    if(clonate===0 && arricchite===0){ notify(`📄 Nessuna scheda nuova: ${presenti} già presenti`); }
+    else { scheduleSave(); clearTimeout(saveTimer); _flushSave(); notify(`📄 ${clonate} schede clonate${coda}`); }
     if(section==="trasferimenti") render(); else if(section==="inventario") renderInventarioOnly(); else render();
     return;
   }
@@ -11045,14 +11082,18 @@ function _tfConfermaRicevi(){
     const idx=wines.findIndex(w=>_transferMatchKey(w)===key);
     let target;
     if(idx>=0){
-      target=wines[idx];
-      wines=wines.map((x,i)=> i!==idx ? x : {...x,giacenza:(parseInt(x.giacenza)||0)+qtyLine,lots:[...(x.lots||[]),...recLots]});
+      target=_tfArricchisci(wines[idx],line);
+      wines=wines.map((x,i)=> i!==idx ? x : {..._tfArricchisci(x,line),giacenza:(parseInt(x.giacenza)||0)+qtyLine,lots:[...(x.lots||[]),...recLots]});
       updated++;
     } else {
       const nz=inferPaese(line.nazione,line.regione,line.zona)||line.nazione||"Italia";
-      target={id:uid(),nome:line.nome,produttore:line.produttore||"",distributore:"",annata:line.annata||"",vitigni:_normVitigni(line.vitigni||""),
-        tipologia:line.tipologia||"Rosso",regione:line.regione||"",nazione:nz,zona:line.zona||"",
-        prezzoAcq:parseFloat(recLots[0]?.prezzoAcq)||0,iva:parseInt(line.iva)||22,prezzoCarta:parseFloat(line.prezzoCarta)||0,
+      target={id:uid(),nome:line.nome,produttore:line.produttore||"",
+        distributore:line.distributore||"",annata:line.annata||"",vitigni:_normVitigni(line.vitigni||""),
+        tipologia:line.tipologia||"Rosso",formato:parseFloat(line.formato)||0.75,
+        regione:line.regione||"",nazione:nz,zona:line.zona||"",
+        prezzoAcq:parseFloat(recLots[0]?.prezzoAcq)||parseFloat(line.prezzoAcq)||0,
+        iva:parseInt(line.iva)||22,prezzoCarta:parseFloat(line.prezzoCarta)||0,
+        prezzoCalice:parseFloat(line.prezzoCalice)||0,
         sku:_nextSku(),giacenza:qtyLine,lots:recLots};
       wines=[...wines,target];
       created++;
