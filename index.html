@@ -406,6 +406,46 @@ body{background:var(--bg)}
 [style*="font-family:var(--font-serif)"],.kpi-val,.calc-val,.giacenza-big,.modal-header h2,.login-logo h1{font-variation-settings:"SOFT" 100,"WONK" 0}
 ::selection{background:rgba(172,205,147,.35);color:var(--txt)}
 </style>
+
+<!-- ══ PORTLAND MOBILE · tema chiaro salvia (attivo solo in vista mobile) ══ -->
+<style id="portland-mobile">
+html:has(#mob-screen[style*="flex"]){
+  --sal-50:#F5F8F1;--sal-100:#E8F0E0;--sal-200:#D3E3C5;--sal-300:#ACCD93;--sal-500:#8AAE70;--sal-700:#5A7B45;--sal-900:#2E3B26;--ink:#1D1D1B;
+  --bg:var(--sal-50);--bg2:#FCFDFA;--bg3:var(--sal-100);--border:var(--sal-200);--border2:#BFD5AC;
+  --txt:var(--ink);--txt1:var(--ink);--txt2:var(--sal-900);--txt3:#5B6152;--txt4:#868C7E;
+  --amber:var(--sal-700);--amber2:#4A6838;--amber3:var(--sal-500);--amber4:var(--sal-200);
+  --amber-rgb:90,123,69;--amber3-rgb:138,174,112;--amber-glow:0 0 0 3px rgba(90,123,69,.18);
+  --glass:rgba(252,253,250,.92);--glass-border:rgba(29,29,27,.08);
+  --red:#B8432F;--green:#3D7A2E;--orange:#B07A12;--blue:#2F6A8F;
+  --shadow-sm:0 1px 3px rgba(46,59,38,.10);--shadow-md:0 4px 14px rgba(46,59,38,.12);--shadow-lg:0 10px 30px rgba(46,59,38,.16);
+  color-scheme:light;
+}
+html:has(#mob-screen[style*="flex"]) body{background:var(--sal-50);color:var(--ink)}
+#mob-screen{background:var(--bg);color:var(--txt)}
+#mob-topbar{background:var(--sal-300)!important;border-bottom:1px solid rgba(29,29,27,.12)!important;color:var(--ink)}
+#mob-topbar *{color:var(--ink)}
+#mob-topbar input{background:#FCFDFA!important;border:1px solid rgba(29,29,27,.15)!important;color:var(--ink)!important}
+#mob-topbar input::placeholder{color:#7A8072}
+#mob-topbar button,#mob-exit-btn{background:rgba(252,253,250,.55)!important;border:1px solid rgba(29,29,27,.18)!important;color:var(--ink)!important}
+#mob-log{background:var(--sal-100)!important;color:var(--txt3)}
+#mob-tab-bar{background:#FCFDFA!important;border-color:var(--border)!important}
+.mob-wine-row:active{background:rgba(90,123,69,.08)}
+.mob-giacenza.zero{color:var(--red)}
+.mob-btn-minus{background:rgba(184,67,47,.08);border-color:rgba(184,67,47,.25);color:var(--red)}
+.mob-btn-minus:active{background:rgba(184,67,47,.18)}
+.mob-btn-plus{background:rgba(61,122,46,.08);border-color:rgba(61,122,46,.25);color:var(--green)}
+.mob-btn-plus:active{background:rgba(61,122,46,.18)}
+#mob-toast{background:var(--ink);color:#F5F8F1;border-color:var(--sal-300)}
+#mob-toast-undo{background:var(--sal-300);color:var(--ink)}
+.mob-stepper{background:#FCFDFA;border-color:var(--border2)!important}
+.mob-step-btn{background:transparent!important;color:var(--sal-900)!important}
+.mob-step-btn:active{background:var(--sal-100)!important}
+.mob-step-val{background:var(--sal-50)!important;color:var(--ink)!important;font-weight:600}
+.mob-confirm-btn{background:var(--sal-700)!important;border-color:var(--sal-700)!important;color:#FCFDFA!important}
+.mob-confirm-btn:active{background:var(--sal-900)!important;transform:scale(.94)}
+.mob-acc-header{background:var(--sal-100)!important}
+.db-dot.ok{background:var(--green)!important}
+</style>
 </head>
 <body>
 
