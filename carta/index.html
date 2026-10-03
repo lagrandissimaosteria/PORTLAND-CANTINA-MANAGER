@@ -4,14 +4,14 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
 <title>Carta dei Vini — Portland</title>
-<meta name="description" content="La carta dei vini di Portland, bar tavola calda in Via Ampere 15, Milano: al calice, carta breve e cantina completa.">
+<meta name="description" content="La carta dei vini di Portland, bar tavola calda in Via Ampere 15, Milano: al calice e cantina completa.">
 <meta name="theme-color" content="#1D1D1B">
 <link rel="icon" type="image/svg+xml" href="logo.svg?v=2">
 <link rel="icon" type="image/png" sizes="64x64" href="favicon.png?v=2">
 <link rel="apple-touch-icon" href="icon.png?v=2">
 <meta property="og:type" content="website">
 <meta property="og:title" content="Carta dei Vini — Portland">
-<meta property="og:description" content="Al calice, carta breve e cantina completa.">
+<meta property="og:description" content="Al calice e cantina completa.">
 <meta property="og:url" content="https://lagrandissimaosteria.github.io/PORTLAND-CANTINA-MANAGER/carta/">
 <meta property="og:image" content="https://lagrandissimaosteria.github.io/PORTLAND-CANTINA-MANAGER/carta/og.jpg">
 <meta property="og:image:width" content="1200">
@@ -850,13 +850,6 @@ var(--pt-nero);
       </span>
       <span class="btn-arrow">→</span>
     </button>
-    <button class="mobile-nav-btn" onclick="setViewMobile('mescita')">
-      <span style="display:flex;flex-direction:column;align-items:flex-start;gap:2px">
-        <span>Carta Breve</span>
-        <span style="font-size:9px;opacity:.45;letter-spacing:.06em;text-transform:none;font-weight:300">Per bere bene senza pensarci troppo</span>
-      </span>
-      <span class="btn-arrow">→</span>
-    </button>
     <button class="mobile-nav-btn" onclick="setViewMobile('cantina')">
       <span style="display:flex;flex-direction:column;align-items:flex-start;gap:2px">
         <span>Cantina completa</span>
@@ -884,10 +877,6 @@ var(--pt-nero);
     <button class="btn-view active" data-view="calice" onclick="setView('calice')">
       Al Calice
       <span class="btn-view-sub">Vini disponibili a bicchiere</span>
-    </button>
-    <button class="btn-view" data-view="mescita" onclick="setView('mescita')">
-      Carta Breve
-      <span class="btn-view-sub">Per bere bene senza pensarci troppo</span>
     </button>
     <button class="btn-view" data-view="cantina" onclick="setView('cantina')">
       Cantina
@@ -973,7 +962,6 @@ var(--pt-nero);
     sbUrl:      "https://ixhxkqhggskmfdbzbdii.supabase.co",
     sbKey:      "sb_publishable_XahUMQq5VMlOfo3xYFiPUQ_3sMR7wzW",
     dbUser:     "portland",
-    mescitaMax: 45,
     paeseOrder: ["Italia","Francia"]
   };
 </script>
