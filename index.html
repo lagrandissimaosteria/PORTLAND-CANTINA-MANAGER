@@ -585,7 +585,9 @@ td[ondblclick]:hover{background:rgba(255,159,10,.06)!important}
     // Giornata continua spezzata in 2 fasce (colazione+pranzo / pomeriggio+aperitivo):
     // senza questo i KPI "per servizio" tratterebbero 15 ore come un servizio solo
     // e non sarebbero confrontabili con gli altri due locali.
-    serviziGiorno:       { 2:2, 3:2, 4:2, 5:2, 6:2 }
+    serviziGiorno:       { 2:2, 3:2, 4:2, 5:2, 6:2 },
+    // Calici sempre in euro tondi, arrotondati per eccesso (9,50 -> 10).
+    arrotondaCalice:     true
   };
 </script>
 <!-- ── BOOTSTRAP PORTLAND ───────────────────────────────────────────────────
@@ -622,7 +624,7 @@ td[ondblclick]:hover{background:rgba(255,159,10,.06)!important}
     }catch(e){ /* storage off: si configura dal pannello Impostazioni */ }
   })();
 </script>
-<script src="manager.js?v=20260925a"></script>
+<script src="manager.js?v=20261003a"></script>
 
 <!-- NOTE VELOCE MODAL -->
 <div class="modal-backdrop hidden" id="note-veloce-backdrop" onclick="closeNoteVeloce(event)">

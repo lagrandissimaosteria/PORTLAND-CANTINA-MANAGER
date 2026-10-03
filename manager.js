@@ -43,7 +43,9 @@ const CONFIG = (() => {
     // Email con ruolo amministratore quando l'account non ha app_metadata.role.
     // Ogni altro account e' "staff": solo Inventario Rapido (Scarico/Fresco/
     // Storico), anche da desktop.
-    authAdmins:     []
+    authAdmins:     [],
+    // Prezzo al calice arrotondato per eccesso all'euro intero (9,50 -> 10).
+    arrotondaCalice: false
   };
   const O = (typeof window!=="undefined" && window.CM_CONFIG && typeof window.CM_CONFIG==="object" && !Array.isArray(window.CM_CONFIG)) ? window.CM_CONFIG : {};
   return Object.freeze({ ...D, ...O });
@@ -51,6 +53,12 @@ const CONFIG = (() => {
 // Helper sanzionato per QUALSIASI nuova chiave localStorage. Le chiavi storiche
 // restano "cm_*" (lsPrefix default) ⇒ nessun orfano sull'install corrente.
 function _lsKey(k){ return CONFIG.lsPrefix + k; }
+// Normalizza il prezzo al calice: con CONFIG.arrotondaCalice va all'euro intero
+// superiore. Il round a 2 decimali evita che 10.000001 diventi 11.
+function _pCalice(v){
+  const n=parseFloat(v)||0;
+  return (CONFIG.arrotondaCalice && n>0) ? Math.ceil(Math.round(n*100)/100) : n;
+}
 // Le chiavi localStorage passano tutte da _lsKey(): con lsPrefix diverso per locale
 // (es. "lg_", "pt_") i tre gestionali non si sovrascrivono più a vicenda quando
 // girano sulla stessa origine — compreso il caso file:// da cartella locale.
@@ -8294,7 +8302,7 @@ function saveWine(){
     regione:get("mf-regione"),nazione:get("mf-nazione"),zona:get("mf-zona"),
     prezzoAcq:parseFloat(get("mf-prezzoAcq"))||0,iva:parseInt(get("mf-iva"))||22,
     prezzoCarta:parseFloat(get("mf-prezzoCarta"))||0,
-    prezzoCalice:parseFloat(get("mf-prezzoCalice"))||0,
+    prezzoCalice:_pCalice(get("mf-prezzoCalice")),
     giacenza: modalWine ? (parseInt(modalWine.giacenza)||0) : 0, // vedi _rettificaGiacenzaLedger sotto
     inFresco:document.getElementById("mf-infresco")?.checked||false,
     sku:modalWine?.sku,
@@ -11319,7 +11327,7 @@ function _tfArricchisci(w,line){
   if(!(parseFloat(out.formato)>0) && parseFloat(line.formato)>0) out.formato=parseFloat(line.formato);
   if(!(parseInt(out.iva)>0) && parseInt(line.iva)>0) out.iva=parseInt(line.iva);
   [["prezzoCarta","prezzoCarta"],["prezzoCalice","prezzoCalice"],["prezzoAcq","prezzoAcq"]].forEach(([k,src])=>{
-    if(!(parseFloat(out[k])>0) && parseFloat(line[src])>0) out[k]=parseFloat(line[src]);
+    if(!(parseFloat(out[k])>0) && parseFloat(line[src])>0) out[k]=k==="prezzoCalice"?_pCalice(line[src]):parseFloat(line[src]);
   });
   if(vuoto(out.nazione)) out.nazione="Italia";
   return out;
@@ -11531,7 +11539,7 @@ function _tfSchedaLine(w){
     vitigni:w.vitigni||"",tipologia:w.tipologia||"Rosso",formato:parseFloat(w.formato)||0.75,
     regione:w.regione||"",nazione:w.nazione||"Italia",zona:w.zona||"",
     prezzoAcq:parseFloat(w.prezzoAcq)||0,iva:parseInt(w.iva)||22,
-    prezzoCarta:parseFloat(w.prezzoCarta)||0,prezzoCalice:parseFloat(w.prezzoCalice)||0,qty:0,lots:[]};
+    prezzoCarta:parseFloat(w.prezzoCarta)||0,prezzoCalice:_pCalice(w.prezzoCalice),qty:0,lots:[]};
 }
 function _tfSchedaCreate(line){
   const nz=inferPaese(line.nazione,line.regione,line.zona)||line.nazione||"Italia";
@@ -11539,7 +11547,7 @@ function _tfSchedaCreate(line){
     annata:line.annata||"",vitigni:_normVitigni(line.vitigni||""),tipologia:line.tipologia||"Rosso",
     formato:parseFloat(line.formato)||0.75,regione:line.regione||"",nazione:nz,zona:line.zona||"",
     prezzoAcq:parseFloat(line.prezzoAcq)||0,iva:parseInt(line.iva)||22,
-    prezzoCarta:parseFloat(line.prezzoCarta)||0,prezzoCalice:parseFloat(line.prezzoCalice)||0,
+    prezzoCarta:parseFloat(line.prezzoCarta)||0,prezzoCalice:_pCalice(line.prezzoCalice),
     sku:_nextSku(),giacenza:0,lots:[]};
 }
 function _tfSetMode(m){
@@ -11620,7 +11628,7 @@ function _tfManifestLine(w,qty,snap){
     formato:parseFloat(w.formato)||0.75,
     regione:w.regione||"",nazione:w.nazione||"Italia",zona:w.zona||"",iva:parseInt(w.iva)||22,
     prezzoAcq:parseFloat(w.prezzoAcq)||0,
-    prezzoCarta:parseFloat(w.prezzoCarta)||0,prezzoCalice:parseFloat(w.prezzoCalice)||0,qty,lots:snap};
+    prezzoCarta:parseFloat(w.prezzoCarta)||0,prezzoCalice:_pCalice(w.prezzoCalice),qty,lots:snap};
 }
 function _tfGenera(){
   if(!_syncGate("Carico da fattura")) return;
@@ -11911,7 +11919,7 @@ function _tfConfermaRicevi(){
         regione:line.regione||"",nazione:nz,zona:line.zona||"",
         prezzoAcq:parseFloat(recLots[0]?.prezzoAcq)||parseFloat(line.prezzoAcq)||0,
         iva:parseInt(line.iva)||22,prezzoCarta:parseFloat(line.prezzoCarta)||0,
-        prezzoCalice:parseFloat(line.prezzoCalice)||0,
+        prezzoCalice:_pCalice(line.prezzoCalice),
         sku:_nextSku(),giacenza:qtyLine,lots:recLots};
       wines=[...wines,target];
       created++;
