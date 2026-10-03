@@ -1,0 +1,960 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Carta dei Vini — Portland</title>
+<meta name="description" content="La carta dei vini di Portland, wine bar a Città Studi, Milano: al calice, carta breve e cantina completa.">
+<meta name="theme-color" content="#4a3214">
+<link rel="icon" type="image/png" href="icon.png">
+<link rel="apple-touch-icon" href="icon.png">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Carta dei Vini — Portland">
+<meta property="og:description" content="Al calice, carta breve e cantina completa.">
+<meta property="og:url" content="https://lagrandissimaosteria.github.io/PORTLAND-CANTINA-MANAGER/carta/">
+<meta property="og:image" content="https://lagrandissimaosteria.github.io/PORTLAND-CANTINA-MANAGER/carta/og.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;1,400&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,400&display=swap" rel="stylesheet">
+<style>
+:root{
+  /* Sidebar */
+  --hero:#6b4a1f;--hero2:#4a3214;
+  /* Fondali */
+  --bg:#F9F6F0;--bg-alt:#F2EDE4;
+  /* Testo */
+  --ink:#1A1612;--ink-2:#4A4139;--ink-3:#8C7E72;--ink-4:#B8ADA3;
+  /* Vecchi alias — mantenuti per compatibilità modal/sort/status */
+  --grey:#8C7E72;--gold:#B5A060;
+  /* Linee */
+  --line:#E0D8CE;--line-s:#CFC7BC;
+  /* Tipografia */
+  --font-serif:'Playfair Display',Georgia,serif;
+  --font-sans:'DM Sans','Helvetica Neue',sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--ink);font-family:var(--font-sans);font-size:14px;line-height:1.6;max-width:100%;overflow-x:hidden}
+a{color:inherit;text-decoration:none}
+button{cursor:pointer;font-family:inherit;border:none;background:none;color:inherit}
+
+/* ════════════════════════════════════════════════════════════════
+   DESKTOP (≥1024px) — layout a due colonne
+   ════════════════════════════════════════════════════════════════ */
+@media(min-width:1024px){
+  html,body{height:100%;overflow:hidden}
+  body{display:flex;flex-direction:row;height:100vh}
+
+  /* ── SIDEBAR COLUMN ── */
+  .sidebar-col{
+    width:300px;min-width:300px;flex-shrink:0;
+    height:100vh;display:flex;flex-direction:column;
+    background:
+      radial-gradient(ellipse at 20% 10%, rgba(120,160,200,.18) 0%, transparent 55%),
+      radial-gradient(ellipse at 80% 80%, rgba(200,140,60,.22) 0%, transparent 50%),
+      linear-gradient(175deg, #6b4a1f 0%, #4a3214 45%, #2e1f0c 100%);
+    border-right:1px solid rgba(255,255,255,.06);
+    box-shadow: inset -1px 0 0 rgba(0,0,0,.18), 2px 0 12px rgba(0,0,0,.12);
+    overflow:hidden;
+    position:relative;
+  }
+  /* sottile luce speculare in alto */
+  .sidebar-col::before{
+    content:"";
+    position:absolute;top:0;left:0;right:0;height:1px;
+    background:linear-gradient(90deg,transparent,rgba(255,255,255,.18),transparent);
+    z-index:1;pointer-events:none;
+  }
+
+  /* ── LOGO AREA ── */
+  .sidebar-brand{
+    flex-shrink:0;
+    display:flex;flex-direction:column;align-items:center;
+    padding:22px 28px 18px;
+    gap:8px;
+  }
+  .brand-doodle{
+    width:80px;height:auto;
+    display:block;
+    /* sfondo nero → screen per renderlo trasparente */
+    mix-blend-mode:screen;
+    opacity:.9;
+  }
+  .brand-logo{
+    width:230px;max-width:100%;height:auto;
+    mix-blend-mode:screen;
+    opacity:.95;
+    display:block;
+  }
+  .brand-sep{
+    width:28px;height:1px;
+    background:rgba(255,255,255,.2);
+    margin-top:0;
+  }
+
+  /* ── NAV BUTTONS ── */
+  .nav-views{
+    flex-shrink:0;
+    padding:0 18px 16px;
+    display:flex;flex-direction:column;gap:8px;
+  }
+  .btn-view{
+    display:flex;align-items:flex-start;flex-direction:column;gap:3px;
+    width:100%;padding:13px 20px;
+    border:1px solid rgba(255,255,255,.1);
+    border-radius:0;
+    background:transparent;
+    color:rgba(255,255,255,.45);
+    font-family:var(--font-sans);font-size:9px;font-weight:400;
+    letter-spacing:.14em;text-transform:uppercase;
+    transition:background .18s,color .18s,border-color .18s;
+    position:relative;overflow:hidden;
+    text-align:left;
+  }
+  .btn-view::before{display:none}
+  .btn-view-sub{
+    font-size:8px;letter-spacing:.03em;text-transform:none;font-weight:300;
+    opacity:0;transition:opacity .18s;color:rgba(255,255,255,.35);display:block;
+  }
+  .btn-view:hover .btn-view-sub,.btn-view.active .btn-view-sub{opacity:1}
+  .btn-view:hover{background:rgba(255,255,255,.07);color:rgba(255,255,255,.75);border-color:rgba(255,255,255,.18)}
+  .btn-view.active{background:rgba(255,255,255,.1);color:rgba(255,255,255,.95);border-color:rgba(255,255,255,.25);font-weight:500}
+
+  /* ── FILTRI ── */
+  .sidebar-filters{
+    flex:1;overflow:hidden;
+    display:flex;flex-direction:column;
+    max-height:0;
+    opacity:0;
+    transition:max-height .4s cubic-bezier(.4,0,.2,1), opacity .3s ease;
+    pointer-events:none;
+  }
+  .sidebar-filters.visible{
+    max-height:100vh;
+    opacity:1;
+    pointer-events:auto;
+  }
+  .sidebar-filters #sidebar-inner{
+    flex:1;overflow-y:auto;padding:16px 0 8px;
+  }
+  .sidebar-filters #sidebar-inner::-webkit-scrollbar{width:3px}
+  .sidebar-filters #sidebar-inner::-webkit-scrollbar-thumb{background:rgba(255,255,255,.2)}
+
+  /* ── WINE COLUMN ── */
+  .wine-col{
+    flex:1;height:100vh;overflow-y:auto;min-width:0;
+    display:block;
+    background:#EDEAE3;
+    padding:40px 32px 60px;
+    box-sizing:border-box;
+  }
+  .wine-col .page-wrap{
+    width:100%;max-width:820px;
+    margin:0 auto;
+    background:var(--bg);
+    box-shadow:0 1px 20px rgba(26,22,18,.08);
+    border-radius:0;
+    min-height:calc(100vh - 100px);
+    padding-bottom:80px;
+    box-sizing:border-box;
+  }
+
+  .wine-col .main-content{width:100%;padding:36px 52px 52px;box-sizing:border-box}
+
+  .mobile-landing{display:none!important}
+  .btn-back-mobile{display:none!important}
+  .filter-fab{display:none!important}
+  body>.hero{display:none}
+}
+
+/* ════════════════════════════════════════════════════════════════
+   STILI COMUNI
+   ════════════════════════════════════════════════════════════════ */
+.sb-acc-wrap{
+  margin:0 0 2px;
+  overflow:hidden;
+}
+.sb-acc-wrap:hover{background:rgba(255,255,255,.05)}
+.sb-acc-head{
+  display:flex;justify-content:space-between;align-items:center;
+  padding:10px 20px;cursor:pointer;user-select:none;
+  border-bottom:1px solid rgba(255,255,255,.08);
+}
+.sb-acc-title{
+  font-family:var(--font-sans);font-size:9px;font-weight:500;
+  letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.4);
+}
+.sb-acc-arrow{font-size:8px;color:rgba(255,255,255,.25);transition:transform .25s ease}
+.sb-acc-wrap.open .sb-acc-arrow{transform:rotate(180deg)}
+.sb-acc-body{max-height:0;overflow:hidden;transition:max-height .35s ease,padding .2s ease;padding:0 20px}
+.sb-acc-wrap.open .sb-acc-body{max-height:340px;overflow-y:auto;padding:0 20px 10px}
+.cat-list{list-style:none;display:flex;flex-direction:column;gap:0}
+.cat-item{
+  display:flex;align-items:center;gap:9px;
+  padding:7px 0;cursor:pointer;
+  border-bottom:1px solid rgba(255,255,255,.06);
+  transition:opacity .1s;font-family:var(--font-sans);
+}
+.cat-item:last-child{border-bottom:none}
+.cat-item:hover{opacity:.7}
+.cat-item.active .cat-label{color:rgba(255,255,255,.95);font-weight:500}
+.cat-item.active .cat-count{color:rgba(255,255,255,.6)}
+.cat-item.cat-empty{opacity:.25;pointer-events:none}
+.cat-dot{width:5px;height:5px;border-radius:50%;background:rgba(255,255,255,.2);flex-shrink:0}
+.cat-label{flex:1;font-size:12px;font-weight:400;color:rgba(255,255,255,.6);letter-spacing:.01em}
+.cat-count{font-size:10px;color:rgba(255,255,255,.3);font-weight:400;font-variant-numeric:tabular-nums;min-width:16px;text-align:right}
+.sb-filter-list{list-style:none;display:flex;flex-direction:column}
+.sb-filter-item{
+  font-family:var(--font-sans);font-size:11.5px;font-weight:400;
+  color:rgba(255,255,255,.55);padding:6px 0;
+  border-bottom:1px solid rgba(255,255,255,.06);cursor:pointer;
+  transition:color .1s;
+}
+.sb-filter-item:last-child{border-bottom:none}
+.sb-filter-item:hover{color:rgba(255,255,255,.9)}
+.sb-filter-item.active{color:rgba(255,255,255,.95);font-weight:500}
+.dual-range-wrap{position:relative;height:32px;margin:4px 10px 0}
+.dual-range-track{position:absolute;top:50%;transform:translateY(-50%);left:0;right:0;height:3px;background:rgba(255,255,255,.12);border-radius:2px}
+.dual-range-fill{position:absolute;top:50%;transform:translateY(-50%);height:3px;background:rgba(255,255,255,.6);border-radius:2px}
+.dual-range-wrap input[type=range]{position:absolute;width:100%;top:50%;transform:translateY(-50%);-webkit-appearance:none;appearance:none;background:transparent;pointer-events:none;height:20px}
+.dual-range-wrap input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:13px;height:13px;border-radius:50%;background:#fff;pointer-events:auto;cursor:pointer;box-shadow:0 1px 4px rgba(0,0,0,.25)}
+.price-row{display:flex;justify-content:space-between;padding:0 10px;font-size:10.5px;color:rgba(255,255,255,.45);margin-top:6px}
+.btn-reset-all{
+  font-family:var(--font-sans);font-size:9px;font-weight:400;
+  letter-spacing:.1em;text-transform:uppercase;
+  color:rgba(255,255,255,.25);padding:10px 20px;
+  transition:color .15s;background:none;border:none;cursor:pointer;
+  display:block;width:100%;text-align:left;
+}
+.btn-reset-all:hover{color:rgba(255,255,255,.7)}
+.sezione{margin-bottom:44px}
+.sezione-titolo{
+  font-family:var(--font-sans);font-size:10px;font-weight:500;
+  letter-spacing:.14em;text-transform:uppercase;color:var(--ink-3);
+  padding:0 0 9px 16px;border-bottom:1px solid var(--line-s);margin-bottom:0;
+}
+/* ── RIGA VINO — sistema editoriale ── */
+.vino{
+  display:flex;align-items:stretch;
+  border-bottom:1px solid var(--line);
+  cursor:pointer;
+  transition:background .15s ease;
+  position:relative;
+}
+.vino:hover{background:var(--bg-alt)}
+.vino:first-child{border-top:1px solid var(--line)}
+
+/* Barra accento categoria: linea verticale 2px, colore via CSS var */
+.w-accent-bar{
+  width:2px;background:var(--accent,var(--line));
+  flex-shrink:0;opacity:.55;
+}
+
+.w-body{
+  display:flex;justify-content:space-between;align-items:baseline;
+  padding:13px 16px 13px 14px;gap:16px;flex:1;min-width:0;
+}
+
+/* Colonna sinistra */
+.w-sx{flex:1;min-width:0;display:flex;flex-direction:column;gap:3px}
+
+.w-nome{
+  font-family:var(--font-serif);font-size:15px;font-weight:400;
+  letter-spacing:.01em;color:var(--ink);line-height:1.3;
+  display:flex;align-items:baseline;gap:7px;flex-wrap:wrap;
+}
+.w-annata{
+  font-family:var(--font-sans);font-size:11px;font-weight:400;
+  color:var(--ink-3);letter-spacing:.02em;
+}
+.w-formato{
+  font-family:var(--font-sans);font-size:9px;font-weight:500;
+  letter-spacing:.08em;text-transform:uppercase;
+  color:var(--accent,var(--ink-3));opacity:.8;
+}
+.w-meta{
+  font-family:var(--font-sans);font-size:11px;
+  color:var(--ink-2);display:flex;align-items:center;
+  gap:5px;flex-wrap:wrap;
+}
+.w-prod{
+  font-weight:500;letter-spacing:.06em;
+  text-transform:uppercase;font-size:10px;
+}
+.w-vitigno{font-style:italic;color:var(--ink-3)}
+.w-tipo-label{
+  font-size:9px;font-weight:500;
+  letter-spacing:.1em;text-transform:uppercase;opacity:.85;
+}
+.w-geo{
+  font-family:var(--font-sans);font-size:10px;font-weight:400;
+  color:var(--ink-4);letter-spacing:.03em;
+  display:flex;align-items:center;gap:4px;flex-wrap:wrap;
+}
+.w-sep{
+  color:var(--ink-4);font-style:normal;
+  font-weight:300;opacity:.5;user-select:none;
+}
+
+/* Colonna destra */
+.w-dx{flex-shrink:0;text-align:right}
+.w-price-wrap{
+  display:flex;flex-direction:column;align-items:flex-end;gap:2px;
+}
+.w-price{
+  font-family:var(--font-sans);font-size:16px;font-weight:500;
+  font-variant-numeric:tabular-nums;color:var(--ink);
+  letter-spacing:-.01em;white-space:nowrap;
+}
+.w-calice{
+  font-family:var(--font-sans);font-size:10px;
+  font-weight:400;color:var(--ink-3);
+  white-space:nowrap;font-variant-numeric:tabular-nums;
+}
+.w-calice::before{content:"↑ ";opacity:.45;font-size:9px}
+
+/* Vista calice: barra più discreta */
+.vino-calice .w-accent-bar{opacity:.3}
+
+.main-content{padding:20px 20px 40px}
+.vuoto{padding:40px 20px;text-align:center;color:var(--grey);font-size:14px;line-height:1.8}
+/* accent color ora via --accent CSS custom property (inline su ogni .vino) */
+/* classi slug rimosse — gestite da w-accent-bar */
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.38);z-index:200;align-items:center;justify-content:center;padding:20px;backdrop-filter:blur(4px)}
+.modal-overlay.show{display:flex}
+.modal-card{background:var(--bg);width:100%;max-width:520px;max-height:88vh;overflow-y:auto;border-radius:0;box-shadow:0 16px 48px rgba(26,22,18,.22);position:relative}
+.modal-hero-div{background:linear-gradient(135deg,#5B7FA6,#3d5f7a);padding:28px 28px 22px;position:relative;overflow:hidden;border-radius:16px 16px 0 0}
+.modal-hero-doodle{position:absolute;right:-20px;top:-10px;height:120%;pointer-events:none;opacity:.18;mix-blend-mode:screen}
+.modal-cat{font-size:9px;letter-spacing:3px;text-transform:uppercase;color:rgba(255,255,255,.55);margin-bottom:6px;position:relative;z-index:1}
+.modal-nome{font-family:var(--font-serif);font-size:22px;font-weight:400;color:#fff;line-height:1.25;position:relative;z-index:1}
+.modal-annata{font-size:13px;color:rgba(255,255,255,.65);margin-top:4px;position:relative;z-index:1}
+.modal-prezzo{display:flex;gap:16px;padding:16px 28px;border-bottom:1px solid var(--line)}
+.modal-p-item{display:flex;flex-direction:column;gap:2px}
+.modal-p-lbl{font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--grey)}
+.modal-p-val{font-family:var(--font-sans);font-size:20px;font-weight:300;color:var(--ink);letter-spacing:-.3px;font-variant-numeric:tabular-nums}
+.modal-body{padding:22px 28px}
+.modal-row{display:flex;gap:8px;margin-bottom:8px;font-size:13px}
+.modal-lbl{color:var(--grey);min-width:90px;font-size:10px;letter-spacing:1px;text-transform:uppercase;padding-top:2px;font-weight:600}
+.modal-val{color:var(--ink);font-weight:400}
+.modal-close{position:absolute;top:14px;right:14px;width:28px;height:28px;border-radius:50%;background:rgba(255,255,255,.18);color:#fff;font-size:16px;display:flex;align-items:center;justify-content:center;border:none;cursor:pointer;line-height:1;z-index:2;transition:background .2s}
+.modal-close:hover{background:rgba(255,255,255,.3)}
+#sb-status{position:fixed;bottom:14px;right:14px;z-index:80;display:flex;align-items:center;gap:6px;background:rgba(250,247,241,.92);border:1px solid var(--line);border-radius:20px;padding:5px 12px 5px 8px;box-shadow:0 2px 8px rgba(0,0,0,.08);backdrop-filter:blur(8px);font-size:9px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:var(--grey);user-select:none}
+#sb-dot{width:7px;height:7px;border-radius:50%;background:var(--grey);flex-shrink:0;transition:background .4s,box-shadow .4s}
+#sb-dot.ok{background:#16a34a;box-shadow:0 0 0 3px rgba(22,163,74,.15)}
+#sb-dot.sync{background:var(--gold);animation:pulse 1s infinite}
+#sb-dot.err{background:#ef4444}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
+
+/* drawer mobile */
+.drawer-overlay{
+  position:fixed;inset:0;
+  background:rgba(26,22,18,0);
+  opacity:0;pointer-events:none;
+  transition:opacity .3s ease,background .3s ease;
+  z-index:100;
+}
+.drawer-overlay.show{
+  opacity:1;pointer-events:auto;
+  background:rgba(26,22,18,.42);
+}
+.filter-drawer{
+  position:fixed;bottom:0;left:0;right:0;z-index:101;
+  background:var(--bg);
+  border-top:1px solid var(--line-s);
+  border-radius:0;          /* foglio, non modale */
+  max-height:78vh;overflow-y:auto;
+  overscroll-behavior:contain;
+  transform:translateY(100%);
+  transition:transform .32s cubic-bezier(.32,.72,0,1);
+  padding:0 20px 40px;
+  -webkit-overflow-scrolling:touch;
+}
+.filter-drawer.open{transform:translateY(0)}
+/* Handle: linea sottile, non pillola */
+.filter-drawer::before{
+  content:'';display:block;
+  width:28px;height:1px;
+  background:var(--line-s);
+  margin:16px auto 4px;
+}
+.drawer-handle{display:none} /* sostituito da ::before */
+.drawer-hdr{
+  display:flex;justify-content:space-between;align-items:center;
+  padding:8px 0 14px;
+  border-bottom:1px solid var(--line);
+  margin-bottom:4px;
+}
+.drawer-hdr span{
+  font-family:var(--font-sans);font-size:9px;font-weight:500;
+  letter-spacing:.14em;text-transform:uppercase;color:var(--ink-3);
+}
+.drawer-hdr button{
+  font-size:18px;line-height:1;color:var(--ink-3);
+  background:none;border:none;cursor:pointer;padding:0;
+}
+.drawer-body{padding:0 0 60px}
+.drawer-apply{
+  position:sticky;bottom:0;padding:10px 0;
+  background:var(--bg);border-top:1px solid var(--line);
+}
+.drawer-apply button{
+  width:100%;padding:12px;
+  background:var(--ink);color:var(--bg);
+  font-family:var(--font-sans);font-size:10px;font-weight:500;
+  letter-spacing:.1em;text-transform:uppercase;
+  border:none;border-radius:0;cursor:pointer;
+  transition:background .15s;
+}
+.drawer-apply button:hover{background:var(--ink-2)}
+
+/* Drawer: override colori — usa palette chiara */
+#filter-drawer .sb-acc-wrap{border-bottom:1px solid var(--line);margin:0}
+#filter-drawer .sb-acc-head{border-bottom:1px solid var(--line);padding:10px 0}
+#filter-drawer .sb-acc-title{color:var(--ink-3)}
+#filter-drawer .sb-acc-arrow{color:var(--ink-4)}
+#filter-drawer .sb-acc-body{padding:0}
+#filter-drawer .sb-acc-wrap.open .sb-acc-body{padding:0 0 8px}
+#filter-drawer .cat-item{border-bottom-color:var(--line);padding:7px 0}
+#filter-drawer .cat-label{color:var(--ink-2)}
+#filter-drawer .cat-item.active .cat-label{color:var(--ink)}
+#filter-drawer .cat-dot{background:var(--line-s)}
+#filter-drawer .cat-count{color:var(--ink-4)}
+#filter-drawer .sb-filter-item{color:var(--ink-2);border-bottom-color:var(--line);padding:6px 0}
+#filter-drawer .sb-filter-item:hover{color:var(--ink);background:none}
+#filter-drawer .sb-filter-item.active{color:var(--ink);font-weight:500}
+#filter-drawer .dual-range-track{background:var(--line)}
+#filter-drawer .dual-range-fill{background:var(--ink-3)}
+#filter-drawer .dual-range-wrap input[type=range]::-webkit-slider-thumb{background:var(--ink);box-shadow:none}
+#filter-drawer .price-row{color:var(--ink-3)}
+#filter-drawer .btn-reset-all{color:var(--ink-4);padding:10px 0}
+#filter-drawer .btn-reset-all:hover{color:var(--ink);background:none}
+.filter-fab{
+  display:none;position:fixed;bottom:20px;left:50%;transform:translateX(-50%);
+  z-index:90;
+  height:44px;padding:0 22px;
+  background:var(--ink);color:var(--bg);
+  border:none;border-radius:22px;
+  font-family:var(--font-sans);font-size:10px;font-weight:500;
+  letter-spacing:.1em;text-transform:uppercase;
+  align-items:center;justify-content:center;gap:8px;
+  cursor:pointer;
+  box-shadow:0 4px 20px rgba(26,22,18,.28);
+  transition:background .15s,box-shadow .15s;
+  white-space:nowrap;
+}
+.filter-fab:active{background:var(--ink-2);box-shadow:0 2px 8px rgba(26,22,18,.2)}
+.filter-fab .fab-icon{font-size:13px;line-height:1;opacity:.8}
+.fab-badge{
+  display:none;
+  background:#fff;color:var(--ink);
+  border-radius:10px;
+  font-family:var(--font-sans);font-size:10px;font-weight:700;
+  padding:2px 7px;
+  font-variant-numeric:tabular-nums;
+  line-height:1.4;
+  box-shadow:0 1px 4px rgba(0,0,0,.15);
+}
+.fab-badge.show{display:inline}
+
+/* ════════════════════════════════════════════════════════════════
+   MOBILE (≤1023px)
+   ════════════════════════════════════════════════════════════════ */
+@media(max-width:1023px){
+  body>.sidebar-col{display:none}
+  #mobile-hero{display:none!important}
+
+  /* ── LANDING ── */
+  .mobile-landing{
+    display:flex;flex-direction:column;align-items:center;justify-content:center;
+    min-height:100vh;padding:0 32px;
+    background:linear-gradient(175deg,#6b4a1f 0%,#4a3214 60%,#2e1f0c 100%);
+    position:fixed;inset:0;z-index:50;
+    transition:opacity .22s ease,transform .22s ease;
+    opacity:1;transform:translateY(0);
+  }
+  .mobile-landing.hidden{display:none!important}
+  .mobile-landing.is-leaving{opacity:0;transform:translateY(-8px);pointer-events:none}
+  .mobile-landing-doodle{width:72px;mix-blend-mode:screen;opacity:.85;margin-bottom:14px}
+  .mobile-landing-logo{max-width:280px;width:88%;mix-blend-mode:screen;opacity:.95;margin-bottom:8px}
+  .mobile-landing-sub{
+    font-family:var(--font-sans);font-size:9px;letter-spacing:.4em;
+    text-transform:uppercase;color:rgba(255,255,255,.35);margin-bottom:52px;font-weight:400;
+  }
+  .mobile-nav-btns{display:flex;flex-direction:column;gap:0;width:100%;max-width:340px}
+  .mobile-nav-btn{
+    display:flex;align-items:center;justify-content:space-between;
+    width:100%;padding:20px 0;
+    border:none;border-bottom:1px solid rgba(255,255,255,.1);
+    background:transparent;
+    color:rgba(255,255,255,.65);
+    font-family:var(--font-sans);font-size:11px;font-weight:400;
+    letter-spacing:.12em;text-transform:uppercase;
+    transition:color .18s;cursor:pointer;
+  }
+  .mobile-nav-btn:first-child{border-top:1px solid rgba(255,255,255,.1)}
+  .mobile-nav-btn:hover,.mobile-nav-btn:active{color:rgba(255,255,255,.95)}
+  .mobile-nav-btn .btn-arrow{font-size:16px;opacity:.35;transition:opacity .18s,transform .18s;flex-shrink:0}
+  .mobile-nav-btn:hover .btn-arrow{opacity:.8;transform:translateX(3px)}
+
+  /* FAB: nascosto sulla landing, visibile solo in list view */
+  .filter-fab{display:none!important}
+  body.mobile-list-view .filter-fab{display:flex!important}
+
+  /* ── BACK BUTTON ── */
+  .btn-back-mobile{
+    display:flex!important;align-items:center;gap:8px;
+    position:fixed;top:0;left:0;right:0;z-index:49;
+    background:var(--hero2);color:rgba(255,255,255,.85);
+    padding:14px 18px;
+    font-family:var(--font-sans);font-size:9px;font-weight:400;
+    letter-spacing:.12em;text-transform:uppercase;
+    border:none;border-bottom:none;cursor:pointer;
+  }
+  .btn-back-mobile::before{content:"←";font-size:14px;opacity:.7;margin-right:2px;font-weight:300;letter-spacing:0}
+
+  /* ── WINE LIST ── */
+  body.mobile-list-view .wine-col{padding-top:44px}
+  .wine-col{display:flex;flex-direction:column;min-height:100vh}
+  .page-wrap{display:block;width:100%}
+  .sezione{margin-bottom:20px}
+  .sezione-titolo{font-size:10px;padding:12px 14px 10px;letter-spacing:.14em}
+  .vino{padding:12px 10px 12px 14px;gap:8px}
+  .w-body{padding-left:10px}
+  .modal-overlay{padding:0;align-items:flex-end;backdrop-filter:none}
+  .modal-card{max-width:100%;max-height:92vh;border-radius:0;margin:0}
+  .modal-nome{font-size:18px}
+  .modal-body{padding:14px 16px}
+  .modal-prezzo{padding:10px 16px}
+
+  .main-content{padding:12px 0 96px}
+
+  .mobile-list-view #wine-list{animation:listEnter .25s ease forwards}
+  @keyframes listEnter{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+
+  /* Spellcheck / sottolineature browser */
+  .w-nome,.w-meta,.w-prod,.w-vitigno,.w-geo,.w-annata,.w-price,.w-calice,.sezione-titolo{
+    text-decoration:none;-webkit-text-decoration:none;
+  }
+}
+
+/* ════════════════════════════════════════════════════════════════
+   SISTEMA PILLOLA — un solo stile per ogni controllo della carta
+   ════════════════════════════════════════════════════════════════ */
+:root{--pill-h:34px}
+.pill,.chip,.sort-select,.fresco-toggle,.btn-reset-all,.drawer-apply button,.sel-cta,.sel-go,.sel-clear{
+  display:inline-flex;align-items:center;justify-content:center;gap:7px;
+  height:var(--pill-h);padding:0 15px;margin:0;
+  border:1px solid var(--line-s);border-radius:999px;background:var(--bg);color:var(--ink-2);
+  font-family:var(--font-sans);font-size:11px;font-weight:500;letter-spacing:.06em;text-transform:uppercase;
+  line-height:1;white-space:nowrap;cursor:pointer;box-shadow:none;
+  transition:background .15s,color .15s,border-color .15s;
+}
+.pill:hover,.chip:hover,.sort-select:hover,.fresco-toggle:hover{border-color:var(--ink-3);background:var(--bg)}
+.chip.on,.fresco-toggle.active,.sel-cta[aria-pressed="true"]{background:var(--ink);border-color:var(--ink);color:var(--bg);box-shadow:none}
+
+/* Ricerca */
+.search-bar-wrap{display:none;margin:0 0 14px}
+.search-bar-wrap.visible{display:block}
+.search-bar-inner{position:relative}
+.search-input.pill{
+  width:100%;height:42px;padding:0 42px 0 42px;justify-content:flex-start;
+  text-transform:none;letter-spacing:.01em;font-size:14px;font-weight:400;color:var(--ink);background:#fff;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 20 20' fill='none'%3E%3Ccircle cx='8.5' cy='8.5' r='5.5' stroke='%238C7E72' stroke-width='1.5'/%3E%3Cpath d='M13 13L17 17' stroke='%238C7E72' stroke-width='1.5' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-repeat:no-repeat;background-position:16px center;outline:none;-webkit-appearance:none;appearance:none;cursor:text;
+}
+.search-input.pill::-webkit-search-cancel-button{display:none}
+.search-input.pill:focus{border-color:var(--hero);box-shadow:0 0 0 3px rgba(107,74,31,.1)}
+.search-input.pill::placeholder{color:var(--ink-4)}
+.search-clear{position:absolute;right:8px;top:50%;transform:translateY(-50%);width:28px;height:28px;border-radius:50%;font-size:18px;line-height:1;color:var(--ink-3);display:none;align-items:center;justify-content:center}
+.search-clear.show{display:flex}
+.search-clear:hover{background:var(--bg-alt)}
+
+/* Indice tipologie (sticky) */
+.chipnav{
+  position:sticky;top:var(--stick-top,0px);z-index:30;
+  display:flex;flex-wrap:wrap;gap:8px;background:var(--bg);padding:10px 0;
+}
+.chipnav:empty{display:none}
+.chip i{width:7px;height:7px;border-radius:50%;background:var(--c);flex-shrink:0}
+.chip b{font-weight:400;color:var(--ink-4);font-variant-numeric:tabular-nums}
+.chip.on b{color:rgba(249,246,240,.6)}
+
+/* Strumenti sotto le tipologie: ordina · in fresco · conteggio */
+.tools{display:flex;align-items:center;gap:8px;flex-wrap:wrap;padding:4px 0 14px;border-bottom:1px solid var(--line)}
+.sort-bar{display:flex;align-items:center;gap:8px;padding:0;border:0;background:none}
+.sort-select{
+  -webkit-appearance:none;appearance:none;outline:none;padding:0 32px 0 15px;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%234A4139' stroke-width='1.4' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-repeat:no-repeat;background-position:right 13px center;
+}
+.sort-select:focus-visible{border-color:var(--hero)}
+.fresco-toggle{color:#0f9fe0;border-color:rgba(15,159,224,.45)}
+.fresco-toggle .ico{font-size:13px;line-height:1}
+.results-count{margin-left:auto;font-family:var(--font-sans);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-4);white-space:nowrap}
+
+/* Gerarchia: tipologia → paese → regione → produttore → referenze */
+#wine-list .sezione{margin:0 0 36px;scroll-margin-top:calc(var(--stick-top,0px) + var(--nav-h,0px))}
+#wine-list .sezione-titolo{
+  display:flex;align-items:baseline;gap:12px;margin:0;
+  font-family:var(--font-serif);font-size:30px;font-weight:400;font-style:italic;letter-spacing:0;text-transform:none;color:var(--ink);
+  padding:30px 0 10px;border-bottom:2px solid var(--accent,var(--line-s));
+}
+.sez-n{font-family:var(--font-sans);font-style:normal;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-4);font-variant-numeric:tabular-nums}
+.sez-n::after{content:" etichette"}
+.grp-l1{
+  position:sticky;top:calc(var(--stick-top,0px) + var(--nav-h,0px));z-index:20;background:var(--bg);margin:0;
+  font-family:var(--font-sans);font-size:11px;font-weight:500;letter-spacing:.22em;text-transform:uppercase;color:var(--ink);
+  padding:20px 0 8px;border-bottom:1px solid var(--line);
+}
+.grp-l2{font-family:var(--font-serif);font-style:italic;font-size:18px;font-weight:400;color:var(--ink-2);padding:20px 0 2px;margin:0}
+.prod{position:relative;margin:12px 0 6px;padding:0 0 0 18px}
+.prod::before{content:"";position:absolute;left:0;top:3px;bottom:8px;width:2px;border-radius:2px;background:var(--accent,var(--line-s));opacity:.5}
+.prod-h{display:flex;align-items:baseline;gap:8px;flex-wrap:wrap;padding-bottom:2px}
+.prod-n{font-family:var(--font-sans);font-size:11px;font-weight:500;letter-spacing:.1em;text-transform:uppercase;color:var(--ink)}
+.prod-z{font-family:var(--font-sans);font-size:11.5px;color:var(--ink-3)}
+.ref{display:flex;align-items:center;gap:14px;min-height:54px;padding:6px 0;cursor:pointer;-webkit-tap-highlight-color:transparent}
+.ref+.ref{border-top:1px solid var(--line)}
+.ref:hover .ref-nome{color:var(--hero)}
+.ref-main{flex:1;min-width:0}
+.ref-nome{font-family:var(--font-serif);font-size:16px;line-height:1.3;color:var(--ink);transition:color .15s}
+.ref-nome .w-annata{font-size:12px;white-space:nowrap}
+.ref-nome .w-formato{margin-left:4px}
+.ref-nome .w-fresco{font-size:1em;margin-left:6px}
+.ref-meta{font-family:var(--font-sans);font-size:11.5px;color:var(--ink-3);margin-top:2px;line-height:1.4}
+.ref-meta i{font-style:italic}
+.ref-price{flex-shrink:0;width:92px;display:flex;flex-direction:column;align-items:flex-end;gap:2px;text-align:right}
+.ref-price .w-price{font-size:16px}
+.ref-calice{font-family:var(--font-sans);font-size:10.5px;color:var(--ink-3);white-space:nowrap;font-variant-numeric:tabular-nums}
+.w-price-na{font-size:11px;font-weight:400;color:var(--ink-3);font-style:italic}
+.sel-btn{
+  flex-shrink:0;width:34px;height:34px;border-radius:50%;
+  border:1px solid var(--line-s);color:var(--ink-3);background:transparent;
+  display:flex;align-items:center;justify-content:center;
+  transition:background .15s,color .15s,border-color .15s,transform .15s;
+}
+.sel-btn::before{content:"+";font-size:19px;line-height:1;font-weight:300}
+.sel-btn:hover{border-color:var(--hero);color:var(--hero)}
+.sel-btn[aria-pressed="true"]{background:var(--hero);border-color:var(--hero);color:#fff}
+.sel-btn[aria-pressed="true"]::before{content:"\2713";font-size:14px;font-weight:500}
+.sel-btn:active{transform:scale(.9)}
+.fresco-legenda{border-top:0}
+
+/* Scheda dettaglio */
+.modal-prezzo{flex-wrap:wrap;align-items:center}
+.sel-cta{margin-left:auto;height:40px;padding:0 18px;border-color:var(--hero);color:var(--hero)}
+.sel-cta[aria-pressed="true"]{background:var(--hero);border-color:var(--hero);color:#fff}
+.modal-card{border-radius:18px;overflow:hidden}
+.modal-hero-div{border-radius:0}
+
+/* Selezione */
+.sel-fab{
+  display:none;position:fixed;bottom:20px;right:16px;z-index:91;
+  height:44px;padding:0 8px 0 18px;border-radius:999px;
+  background:var(--hero);color:#fff;align-items:center;gap:10px;
+  font-family:var(--font-sans);font-size:11px;font-weight:500;letter-spacing:.08em;text-transform:uppercase;
+  box-shadow:0 4px 20px rgba(74,50,20,.35);
+}
+.sel-fab .sel-n{background:#fff;color:var(--hero);border-radius:999px;min-width:28px;height:28px;display:inline-flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;font-variant-numeric:tabular-nums}
+body.has-sel .sel-fab{display:flex}
+body.has-sel #sb-status{display:none}
+.sel-fab.bump{animation:selBump .35s ease}
+@keyframes selBump{40%{transform:scale(1.08)}}
+.sel-overlay{display:none;position:fixed;inset:0;z-index:210;background:rgba(26,22,18,.42);align-items:center;justify-content:center;padding:20px}
+.sel-overlay.show{display:flex}
+.sel-card{background:var(--bg);width:100%;max-width:480px;max-height:88vh;overflow-y:auto;border-radius:18px;box-shadow:0 16px 48px rgba(26,22,18,.25)}
+.sel-hdr{display:flex;justify-content:space-between;align-items:center;padding:18px 22px 12px;border-bottom:1px solid var(--line)}
+.sel-hdr span{font-family:var(--font-sans);font-size:11px;font-weight:500;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-3)}
+.sel-x{width:32px;height:32px;border-radius:50%;font-size:20px;line-height:1;color:var(--ink-3);display:flex;align-items:center;justify-content:center}
+.sel-x:hover{background:var(--bg-alt)}
+.sel-list{list-style:none;padding:4px 22px}
+.sel-it{display:flex;align-items:center;gap:12px;padding:12px 0;border-bottom:1px solid var(--line)}
+.sel-it-main{flex:1;min-width:0;display:flex;flex-direction:column;gap:2px}
+.sel-it-prod{font-size:10.5px;font-weight:500;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-2)}
+.sel-it-nome{font-family:var(--font-serif);font-size:16px;color:var(--ink);line-height:1.3}
+.sel-it-nome em{font-family:var(--font-sans);font-style:normal;font-size:12px;color:var(--ink-3)}
+.sel-it-p{font-size:15px;font-weight:500;font-variant-numeric:tabular-nums;white-space:nowrap}
+.sel-rm{width:32px;height:32px;border-radius:50%;font-size:20px;color:var(--ink-4);display:flex;align-items:center;justify-content:center}
+.sel-rm:hover{background:var(--bg-alt)}
+.sel-tot{display:flex;justify-content:space-between;padding:14px 22px;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-2);font-variant-numeric:tabular-nums}
+.sel-tot span:last-child{font-size:15px;font-weight:500;color:var(--ink);text-transform:none;letter-spacing:0}
+.sel-acts{display:flex;gap:10px;padding:0 22px 22px}
+.sel-go{flex:1;height:46px;background:var(--ink);border-color:var(--ink);color:var(--bg)}
+.sel-clear{height:46px}
+.sel-overlay.sel-show{padding:0;background:var(--hero2)}
+.sel-show .sel-card{max-width:none;max-height:none;height:100%;border-radius:0;background:linear-gradient(175deg,#6b4a1f 0%,#4a3214 60%,#2e1f0c 100%);color:#fff;box-shadow:none;padding:env(safe-area-inset-top) 0 env(safe-area-inset-bottom)}
+.sel-show .sel-hdr{border-color:rgba(255,255,255,.15);padding:22px 24px 16px}
+.sel-show .sel-hdr span,.sel-show .sel-x{color:rgba(255,255,255,.7)}
+.sel-show .sel-list{padding:8px 24px;max-width:720px;margin:0 auto}
+.sel-show .sel-it{border-color:rgba(255,255,255,.12);padding:20px 0}
+.sel-show .sel-it-prod{color:rgba(255,255,255,.7);font-size:13px}
+.sel-show .sel-it-nome{color:#fff;font-size:26px}
+.sel-show .sel-it-nome em{color:rgba(255,255,255,.75);font-size:18px}
+.sel-show .sel-it-p{color:#fff;font-size:22px}
+
+/* Filtri (sidebar desktop + drawer mobile) */
+.btn-reset-all{width:auto;margin:12px 20px 4px;background:transparent;border-color:rgba(255,255,255,.2);color:rgba(255,255,255,.6);font-size:10px}
+.btn-reset-all:hover{border-color:rgba(255,255,255,.5);color:#fff}
+#filter-drawer .btn-reset-all{margin:14px 0 0;border-color:var(--line-s);color:var(--ink-3)}
+.drawer-apply button{width:100%;height:46px;background:var(--ink);border-color:var(--ink);color:var(--bg)}
+.drawer-fresco{width:100%;height:42px;margin:4px 0 14px}
+
+@media(min-width:1024px){
+  /* Il padding del contenitore di scroll sposterebbe l'aggancio sticky: si usa il margine */
+  .wine-col{padding-top:0}
+  .wine-col .page-wrap{margin-top:40px;border-radius:18px 18px 0 0}
+  .chipnav{margin:0 -52px;padding:12px 52px}
+  /* Viste: stesse pillole, versione su fondo scuro */
+  .nav-views{gap:10px;padding:4px 22px 20px}
+  .btn-view{
+    border-radius:999px;padding:0 22px;height:48px;justify-content:center;gap:2px;
+    font-size:10px;letter-spacing:.14em;border-color:rgba(255,255,255,.18);color:rgba(255,255,255,.6);
+  }
+  .btn-view-sub{display:none}
+  .btn-view.active{background:#fff;border-color:#fff;color:var(--hero2)}
+  .btn-view:hover:not(.active){background:rgba(255,255,255,.08);color:#fff}
+  .sel-fab{left:22px;right:auto;width:256px;justify-content:space-between;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.25);box-shadow:none}
+  .sel-fab:hover{background:rgba(255,255,255,.2)}
+}
+@media(max-width:1023px){
+  .main-content{padding:12px 14px 110px}
+  .search-bar-wrap{margin-bottom:10px}
+  .chipnav{flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;-webkit-overflow-scrolling:touch;margin:0 -14px;padding:8px 14px}
+  .chipnav::-webkit-scrollbar{display:none}
+  .chip{flex:0 0 auto}
+  .tools{padding:2px 0 12px}
+  .results-count{display:none}
+  #sb-status{display:none}
+  .tools{flex-wrap:nowrap}
+  #wine-list .sezione-titolo{font-size:27px;padding:24px 0 8px}
+  .grp-l1{padding:16px 0 7px}
+  .grp-l2{padding:16px 0 0;font-size:17px}
+  .prod{padding-left:14px}
+  .ref{gap:10px}
+  .ref-price{width:auto;min-width:64px}
+  .ref-nome{font-size:15.5px}
+  .sel-btn{width:36px;height:36px}
+  body:not(.mobile-list-view) .sel-fab{display:none!important}
+  body:not(.view-cantina) .filter-fab{display:none!important}
+  body.has-sel.mobile-list-view .filter-fab{left:16px;transform:none}
+  .sel-overlay{padding:0;align-items:flex-end}
+  .sel-card{max-width:100%;max-height:90vh;border-radius:18px 18px 0 0}
+  .sel-show .sel-card{max-height:none;border-radius:0}
+  .modal-card{border-radius:18px 18px 0 0}
+  /* Landing: stesse pillole */
+  .mobile-nav-btns{gap:12px}
+  .mobile-nav-btn,.mobile-nav-btn:first-child{border:1px solid rgba(255,255,255,.22);border-radius:999px;padding:14px 24px}
+  .mobile-nav-btn:active{background:rgba(255,255,255,.1)}
+  .mobile-nav-btn>span:first-child{text-align:left;padding-right:12px}
+}
+
+/* ════════════════════════════════════════════════════════════════
+   SFONDO CANTINA — foto + lista satinata
+   ════════════════════════════════════════════════════════════════ */
+:root{--paper:rgba(249,246,240,.66);--paper-bar:rgba(249,246,240,.84);--nation:rgba(224,206,180,.95)}
+.chipnav,.grp-l1{background:var(--paper-bar);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px)}
+@media(min-width:1024px){
+  .wine-col{background:radial-gradient(120% 90% at 30% 0%,#5a3e1a 0%,#2e1f0c 55%,#1a1208 100%)}
+  .wine-col .page-wrap{
+    background:var(--paper);
+    -webkit-backdrop-filter:blur(22px) saturate(1.15);backdrop-filter:blur(22px) saturate(1.15);
+    box-shadow:0 10px 60px rgba(0,0,0,.35);
+  }
+  .chipnav{border-radius:18px 18px 0 0}
+}
+@media(max-width:1023px){
+  /* Mobile: foto pre-sfocata (nessun backdrop-filter sulla lista lunga = scroll fluido) */
+  body::before{
+    content:"";position:fixed;top:0;left:0;right:0;height:140vh;z-index:-1;pointer-events:none;
+    background:linear-gradient(rgba(249,246,240,.6),rgba(249,246,240,.6)),linear-gradient(175deg,#e9d9bd 0%,#d8c09a 100%);
+  }
+  .mobile-landing{
+    background:
+      linear-gradient(175deg,rgba(107,74,31,.86) 0%,rgba(74,50,20,.9) 60%,rgba(46,31,12,.94) 100%),
+      #4a3214;
+  }
+}
+/* Nazioni: fascia sabbia a contrasto, testo più grande delle regioni */
+.grp-l1{
+  background:var(--nation);color:var(--ink);
+  font-size:15px;font-weight:500;letter-spacing:.2em;
+  margin:18px -52px 0;padding:12px 52px 10px;
+  border-top:1px solid rgba(26,22,18,.06);border-bottom:1px solid rgba(26,22,18,.1);
+}
+.grp-l2{font-size:17px}
+@media(max-width:1023px){
+  .grp-l1{font-size:14px;letter-spacing:.18em;margin:14px -14px 0;padding:11px 14px 9px}
+  .grp-l2{font-size:16px}
+}
+/* Mobile: tipologie in griglia a 3 colonne, niente scroll orizzontale */
+@media(max-width:1023px){
+  .chipnav{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px;overflow:visible;padding:8px 14px}
+  .chip{height:30px;padding:0 6px;gap:5px;font-size:10px;letter-spacing:.04em;min-width:0}
+  .chip i{width:6px;height:6px}
+  .chip b{font-size:9px}
+}
+@media(max-width:380px){.chip{font-size:9.5px;letter-spacing:.01em;padding:0 4px;gap:4px}.chip i{display:none}}
+/* Ordina a sinistra, In fresco a destra */
+.sort-bar{flex:1;min-width:0}
+.sort-bar .fresco-toggle{margin-left:auto}
+/* Grigi più scuri: leggibilità in sala sopra la foto */
+:root{--ink-3:#6F6359;--ink-4:#8F8378;--grey:#6F6359}
+@supports not ((backdrop-filter:blur(1px)) or (-webkit-backdrop-filter:blur(1px))){
+  .wine-col .page-wrap{background:rgba(249,246,240,.94)}
+  .chipnav{background:var(--bg)}
+  .grp-l1{background:#E0CEB4}
+}
+/* ── PORTLAND: wordmark tipografico al posto del logo raster ── */
+.brand-word{font-family:var(--font-serif);font-weight:400;font-style:italic;color:#f3e3c3;
+  letter-spacing:.04em;line-height:1;text-align:center;mix-blend-mode:normal!important;opacity:1!important;width:auto!important}
+.sidebar-brand .brand-word{font-size:44px;padding-top:6px}
+.mobile-landing .brand-word{font-size:56px;margin-bottom:14px}
+.hero .brand-word{font-size:40px}
+.brand-word::after{content:"wine bar · Città Studi";display:block;margin-top:10px;font-family:var(--font-sans);
+  font-style:normal;font-size:9px;letter-spacing:.38em;text-transform:uppercase;color:rgba(243,227,195,.5)}
+</style>
+</head>
+<body>
+
+<!-- ── MOBILE LANDING ── -->
+<div class="mobile-landing" id="mobile-landing">
+    <div class="brand-word mobile-landing-logo">Portland</div>
+  <div class="mobile-landing-sub">Carta dei Vini</div>
+  <div class="mobile-nav-btns">
+    <button class="mobile-nav-btn" onclick="setViewMobile('calice')">
+      <span style="display:flex;flex-direction:column;align-items:flex-start;gap:2px">
+        <span>Al calice</span>
+        <span style="font-size:9px;opacity:.45;letter-spacing:.06em;text-transform:none;font-weight:300">Vini disponibili a bicchiere</span>
+      </span>
+      <span class="btn-arrow">→</span>
+    </button>
+    <button class="mobile-nav-btn" onclick="setViewMobile('mescita')">
+      <span style="display:flex;flex-direction:column;align-items:flex-start;gap:2px">
+        <span>Carta Breve</span>
+        <span style="font-size:9px;opacity:.45;letter-spacing:.06em;text-transform:none;font-weight:300">Per bere bene senza pensarci troppo</span>
+      </span>
+      <span class="btn-arrow">→</span>
+    </button>
+    <button class="mobile-nav-btn" onclick="setViewMobile('cantina')">
+      <span style="display:flex;flex-direction:column;align-items:flex-start;gap:2px">
+        <span>Cantina completa</span>
+        <span style="font-size:9px;opacity:.45;letter-spacing:.06em;text-transform:none;font-weight:300">Tutta la nostra selezione, per chi vuole scegliere con calma</span>
+      </span>
+      <span class="btn-arrow">→</span>
+    </button>
+  </div>
+</div>
+
+<!-- ── BACK BUTTON MOBILE ── -->
+<button class="btn-back-mobile" id="btn-back-mobile" style="display:none" onclick="backToLanding()">Indietro</button>
+
+<!-- ── DESKTOP SIDEBAR ── -->
+<div class="sidebar-col">
+
+  <!-- Brand -->
+  <div class="sidebar-brand">
+        <div class="brand-word brand-logo">Portland</div>
+    <div class="brand-sep"></div>
+  </div>
+
+  <!-- Nav buttons -->
+  <div class="nav-views">
+    <button class="btn-view active" data-view="calice" onclick="setView('calice')">
+      Al Calice
+      <span class="btn-view-sub">Vini disponibili a bicchiere</span>
+    </button>
+    <button class="btn-view" data-view="mescita" onclick="setView('mescita')">
+      Carta Breve
+      <span class="btn-view-sub">Per bere bene senza pensarci troppo</span>
+    </button>
+    <button class="btn-view" data-view="cantina" onclick="setView('cantina')">
+      Cantina
+      <span class="btn-view-sub">Tutta la nostra selezione, per chi vuole scegliere con calma</span>
+    </button>
+  </div>
+
+  <!-- Filtri: visibili SOLO con cantina completa -->
+  <div class="sidebar-filters" id="sidebar-filters">
+    <div id="sidebar-inner"></div>
+  </div>
+
+</div><!-- /sidebar-col -->
+
+<!-- ── WINE COLUMN ── -->
+<div class="wine-col">
+  <!-- Hero solo mobile -->
+  <div class="hero" id="mobile-hero" style="display:none">
+            <div class="hero-inner">
+      <div class="brand-word hero-logo">Portland</div>
+    </div>
+  </div>
+
+  <div class="page-wrap">
+    <div style="flex:1;min-width:0;display:flex;flex-direction:column">
+
+      <div class="main-content">
+        <div class="search-bar-wrap" id="search-bar-wrap">
+          <div class="search-bar-inner">
+            <input class="search-input pill" id="search-input" type="search" spellcheck="false" autocomplete="off"
+              placeholder="Cerca vino, produttore, vitigno…" oninput="onSearch(this)">
+            <button class="search-clear" id="search-clear" onclick="clearSearch()" aria-label="Cancella ricerca">×</button>
+          </div>
+        </div>
+        <nav class="chipnav" id="chipnav" aria-label="Tipologie"></nav>
+        <div class="tools">
+          <div class="sort-bar" id="sort-bar-wrap"></div>
+          <span class="results-count" id="results-count">—</span>
+        </div>
+        <div id="wine-list" spellcheck="false"><div class="vuoto">Caricamento in corso…</div></div>
+      </div>
+    </div>
+  </div>
+</div><!-- /wine-col -->
+
+<!-- Modal -->
+<div class="modal-overlay" id="modal" onclick="closeModal(event)">
+  <div class="modal-card" id="modal-card">
+    <button class="modal-close" onclick="closeModalDirect()">×</button>
+    <div class="modal-hero-div" id="modal-hero">
+            <div class="modal-cat" id="modal-cat"></div>
+      <div class="modal-nome" id="modal-nome"></div>
+      <div class="modal-annata" id="modal-annata"></div>
+    </div>
+    <div class="modal-prezzo" id="modal-prezzo"></div>
+    <div class="modal-body" id="modal-body"></div>
+    <div id="modal-note-wrap" style="display:none;padding:14px 28px;border-top:1px solid var(--line)">
+      <div style="font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--grey);margin-bottom:6px">Nota del sommelier</div>
+      <div id="modal-note-text" style="font-size:13px;color:var(--ink);font-style:italic;line-height:1.6"></div>
+    </div>
+  </div>
+</div>
+
+<!-- Drawer filtri mobile -->
+<div class="drawer-overlay" id="drawer-overlay" onclick="closeDrawer()"></div>
+<div class="filter-drawer" id="filter-drawer">
+  <div class="drawer-handle"></div>
+  <div class="drawer-hdr"><span>Filtri</span><button onclick="closeDrawer()">×</button></div>
+  <div class="drawer-body" id="drawer-body"></div>
+  <div class="drawer-apply"><button onclick="closeDrawer()">Mostra risultati</button></div>
+</div>
+<button class="filter-fab" id="filter-fab" onclick="openDrawer()">
+  <span class="fab-icon">≡</span> Filtri <span class="fab-badge" id="fab-badge">0</span>
+</button>
+
+<div id="sb-status" title="Stato connessione live">
+  <span id="sb-dot"></span><span id="sb-lbl">DB</span>
+</div>
+
+<script>
+  // Portland: progetto Supabase isolato (stesso del Cantina Manager Portland).
+  window.CARTA_CONFIG = {
+    sbUrl:      "https://ixhxkqhggskmfdbzbdii.supabase.co",
+    sbKey:      "sb_publishable_XahUMQq5VMlOfo3xYFiPUQ_3sMR7wzW",
+    dbUser:     "portland",
+    mescitaMax: 45,
+    paeseOrder: ["Italia","Francia"]
+  };
+</script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+<script src="carta.js?v=20260925c"></script>
+</body>
+</html>
