@@ -4,8 +4,8 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
 <title>Carta dei Vini — Portland</title>
-<meta name="description" content="La carta dei vini di Portland, wine bar a Città Studi, Milano: al calice, carta breve e cantina completa.">
-<meta name="theme-color" content="#4a3214">
+<meta name="description" content="La carta dei vini di Portland, bar tavola calda in Via Ampere 15, Milano: al calice, carta breve e cantina completa.">
+<meta name="theme-color" content="#1D1D1B">
 <link rel="icon" type="image/png" href="icon.png">
 <link rel="apple-touch-icon" href="icon.png">
 <meta property="og:type" content="website">
@@ -16,22 +16,28 @@
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;1,400&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,400&display=swap" rel="stylesheet">
 <style>
 :root{
   /* Sidebar */
-  --hero:#6b4a1f;--hero2:#4a3214;
+  /* ── PALETTE PORTLAND ── (verde e nero estratti dal file del logo) */
+  --pt-verde:#ACCD93;        /* verde ufficiale Portland */
+  --pt-nero:#1D1D1B;         /* nero del logo */
+  --pt-verde-scuro:#4E6E3A;  /* verde ufficiale scurito: accenti/hover su chiaro (AA) */
+  --pt-verde-chiaro:#DCEACF; /* verde ufficiale schiarito: fasce nazione */
+  --pt-carta:#F7F8F2;        /* fondo lista */
+  /* Sidebar / accenti */
+  --hero:var(--pt-verde-scuro);--hero2:var(--pt-nero);
   /* Fondali */
-  --bg:#F9F6F0;--bg-alt:#F2EDE4;
+  --bg:var(--pt-carta);--bg-alt:#EDF2E6;
   /* Testo */
-  --ink:#1A1612;--ink-2:#4A4139;--ink-3:#8C7E72;--ink-4:#B8ADA3;
+  --ink:var(--pt-nero);--ink-2:#3E3E3A;--ink-3:#6B6B64;--ink-4:#9A9A92;
   /* Vecchi alias — mantenuti per compatibilità modal/sort/status */
-  --grey:#8C7E72;--gold:#B5A060;
+  --grey:#6B6B64;--gold:var(--pt-verde-scuro);
   /* Linee */
-  --line:#E0D8CE;--line-s:#CFC7BC;
-  /* Tipografia */
-  --font-serif:'Playfair Display',Georgia,serif;
-  --font-sans:'DM Sans','Helvetica Neue',sans-serif;
+  --line:#DDE3D5;--line-s:#C6CFBC;
+  /* Tipografia: Arial, il font del logo */
+  --font-serif:Arial,'Helvetica Neue',Helvetica,sans-serif;
+  --font-sans:Arial,'Helvetica Neue',Helvetica,sans-serif;
 }
 *{box-sizing:border-box;margin:0;padding:0}
 body{background:var(--bg);color:var(--ink);font-family:var(--font-sans);font-size:14px;line-height:1.6;max-width:100%;overflow-x:hidden}
@@ -50,9 +56,7 @@ button{cursor:pointer;font-family:inherit;border:none;background:none;color:inhe
     width:300px;min-width:300px;flex-shrink:0;
     height:100vh;display:flex;flex-direction:column;
     background:
-      radial-gradient(ellipse at 20% 10%, rgba(120,160,200,.18) 0%, transparent 55%),
-      radial-gradient(ellipse at 80% 80%, rgba(200,140,60,.22) 0%, transparent 50%),
-      linear-gradient(175deg, #6b4a1f 0%, #4a3214 45%, #2e1f0c 100%);
+var(--pt-nero);
     border-right:1px solid rgba(255,255,255,.06);
     box-shadow: inset -1px 0 0 rgba(0,0,0,.18), 2px 0 12px rgba(0,0,0,.12);
     overflow:hidden;
@@ -323,7 +327,7 @@ button{cursor:pointer;font-family:inherit;border:none;background:none;color:inhe
 .modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.38);z-index:200;align-items:center;justify-content:center;padding:20px;backdrop-filter:blur(4px)}
 .modal-overlay.show{display:flex}
 .modal-card{background:var(--bg);width:100%;max-width:520px;max-height:88vh;overflow-y:auto;border-radius:0;box-shadow:0 16px 48px rgba(26,22,18,.22);position:relative}
-.modal-hero-div{background:linear-gradient(135deg,#5B7FA6,#3d5f7a);padding:28px 28px 22px;position:relative;overflow:hidden;border-radius:16px 16px 0 0}
+.modal-hero-div{background:var(--pt-nero);padding:28px 28px 22px;position:relative;overflow:hidden;border-radius:16px 16px 0 0}
 .modal-hero-doodle{position:absolute;right:-20px;top:-10px;height:120%;pointer-events:none;opacity:.18;mix-blend-mode:screen}
 .modal-cat{font-size:9px;letter-spacing:3px;text-transform:uppercase;color:rgba(255,255,255,.55);margin-bottom:6px;position:relative;z-index:1}
 .modal-nome{font-family:var(--font-serif);font-size:22px;font-weight:400;color:#fff;line-height:1.25;position:relative;z-index:1}
@@ -467,7 +471,7 @@ button{cursor:pointer;font-family:inherit;border:none;background:none;color:inhe
   .mobile-landing{
     display:flex;flex-direction:column;align-items:center;justify-content:center;
     min-height:100vh;padding:0 32px;
-    background:linear-gradient(175deg,#6b4a1f 0%,#4a3214 60%,#2e1f0c 100%);
+    background:var(--pt-nero);
     position:fixed;inset:0;z-index:50;
     transition:opacity .22s ease,transform .22s ease;
     opacity:1;transform:translateY(0);
@@ -563,7 +567,7 @@ button{cursor:pointer;font-family:inherit;border:none;background:none;color:inhe
   background-repeat:no-repeat;background-position:16px center;outline:none;-webkit-appearance:none;appearance:none;cursor:text;
 }
 .search-input.pill::-webkit-search-cancel-button{display:none}
-.search-input.pill:focus{border-color:var(--hero);box-shadow:0 0 0 3px rgba(107,74,31,.1)}
+.search-input.pill:focus{border-color:var(--hero);box-shadow:0 0 0 3px rgba(78,110,58,.15)}
 .search-input.pill::placeholder{color:var(--ink-4)}
 .search-clear{position:absolute;right:8px;top:50%;transform:translateY(-50%);width:28px;height:28px;border-radius:50%;font-size:18px;line-height:1;color:var(--ink-3);display:none;align-items:center;justify-content:center}
 .search-clear.show{display:flex}
@@ -577,7 +581,7 @@ button{cursor:pointer;font-family:inherit;border:none;background:none;color:inhe
 .chipnav:empty{display:none}
 .chip i{width:7px;height:7px;border-radius:50%;background:var(--c);flex-shrink:0}
 .chip b{font-weight:400;color:var(--ink-4);font-variant-numeric:tabular-nums}
-.chip.on b{color:rgba(249,246,240,.6)}
+.chip.on b{color:rgba(247,248,242,.6)}
 
 /* Strumenti sotto le tipologie: ordina · in fresco · conteggio */
 .tools{display:flex;align-items:center;gap:8px;flex-wrap:wrap;padding:4px 0 14px;border-bottom:1px solid var(--line)}
@@ -652,7 +656,7 @@ button{cursor:pointer;font-family:inherit;border:none;background:none;color:inhe
   height:44px;padding:0 8px 0 18px;border-radius:999px;
   background:var(--hero);color:#fff;align-items:center;gap:10px;
   font-family:var(--font-sans);font-size:11px;font-weight:500;letter-spacing:.08em;text-transform:uppercase;
-  box-shadow:0 4px 20px rgba(74,50,20,.35);
+  box-shadow:0 4px 20px rgba(29,29,27,.3);
 }
 .sel-fab .sel-n{background:#fff;color:var(--hero);border-radius:999px;min-width:28px;height:28px;display:inline-flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;font-variant-numeric:tabular-nums}
 body.has-sel .sel-fab{display:flex}
@@ -681,7 +685,7 @@ body.has-sel #sb-status{display:none}
 .sel-go{flex:1;height:46px;background:var(--ink);border-color:var(--ink);color:var(--bg)}
 .sel-clear{height:46px}
 .sel-overlay.sel-show{padding:0;background:var(--hero2)}
-.sel-show .sel-card{max-width:none;max-height:none;height:100%;border-radius:0;background:linear-gradient(175deg,#6b4a1f 0%,#4a3214 60%,#2e1f0c 100%);color:#fff;box-shadow:none;padding:env(safe-area-inset-top) 0 env(safe-area-inset-bottom)}
+.sel-show .sel-card{max-width:none;max-height:none;height:100%;border-radius:0;background:var(--pt-nero);color:#fff;box-shadow:none;padding:env(safe-area-inset-top) 0 env(safe-area-inset-bottom)}
 .sel-show .sel-hdr{border-color:rgba(255,255,255,.15);padding:22px 24px 16px}
 .sel-show .sel-hdr span,.sel-show .sel-x{color:rgba(255,255,255,.7)}
 .sel-show .sel-list{padding:8px 24px;max-width:720px;margin:0 auto}
@@ -750,10 +754,10 @@ body.has-sel #sb-status{display:none}
 /* ════════════════════════════════════════════════════════════════
    SFONDO CANTINA — foto + lista satinata
    ════════════════════════════════════════════════════════════════ */
-:root{--paper:rgba(249,246,240,.66);--paper-bar:rgba(249,246,240,.84);--nation:rgba(224,206,180,.95)}
+:root{--paper:rgba(247,248,242,.97);--paper-bar:rgba(247,248,242,.94);--nation:var(--pt-verde-chiaro)}
 .chipnav,.grp-l1{background:var(--paper-bar);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px)}
 @media(min-width:1024px){
-  .wine-col{background:radial-gradient(120% 90% at 30% 0%,#5a3e1a 0%,#2e1f0c 55%,#1a1208 100%)}
+  .wine-col{background:var(--pt-verde)}
   .wine-col .page-wrap{
     background:var(--paper);
     -webkit-backdrop-filter:blur(22px) saturate(1.15);backdrop-filter:blur(22px) saturate(1.15);
@@ -765,12 +769,11 @@ body.has-sel #sb-status{display:none}
   /* Mobile: foto pre-sfocata (nessun backdrop-filter sulla lista lunga = scroll fluido) */
   body::before{
     content:"";position:fixed;top:0;left:0;right:0;height:140vh;z-index:-1;pointer-events:none;
-    background:linear-gradient(rgba(249,246,240,.6),rgba(249,246,240,.6)),linear-gradient(175deg,#e9d9bd 0%,#d8c09a 100%);
+    background:var(--pt-carta);
   }
   .mobile-landing{
     background:
-      linear-gradient(175deg,rgba(107,74,31,.86) 0%,rgba(74,50,20,.9) 60%,rgba(46,31,12,.94) 100%),
-      #4a3214;
+var(--pt-nero);
   }
 }
 /* Nazioni: fascia sabbia a contrasto, testo più grande delle regioni */
@@ -797,27 +800,46 @@ body.has-sel #sb-status{display:none}
 .sort-bar{flex:1;min-width:0}
 .sort-bar .fresco-toggle{margin-left:auto}
 /* Grigi più scuri: leggibilità in sala sopra la foto */
-:root{--ink-3:#6F6359;--ink-4:#8F8378;--grey:#6F6359}
+:root{--ink-3:#5E5E58;--ink-4:#86867E;--grey:#5E5E58}
 @supports not ((backdrop-filter:blur(1px)) or (-webkit-backdrop-filter:blur(1px))){
-  .wine-col .page-wrap{background:rgba(249,246,240,.94)}
+  .wine-col .page-wrap{background:var(--pt-carta)}
   .chipnav{background:var(--bg)}
-  .grp-l1{background:#E0CEB4}
+  .grp-l1{background:var(--pt-verde-chiaro)}
 }
-/* ── PORTLAND: wordmark tipografico al posto del logo raster ── */
-.brand-word{font-family:var(--font-serif);font-weight:400;font-style:italic;color:#f3e3c3;
-  letter-spacing:.04em;line-height:1;text-align:center;mix-blend-mode:normal!important;opacity:1!important;width:auto!important}
-.sidebar-brand .brand-word{font-size:44px;padding-top:6px}
-.mobile-landing .brand-word{font-size:56px;margin-bottom:14px}
-.hero .brand-word{font-size:40px}
-.brand-word::after{content:"wine bar · Città Studi";display:block;margin-top:10px;font-family:var(--font-sans);
-  font-style:normal;font-size:9px;letter-spacing:.38em;text-transform:uppercase;color:rgba(243,227,195,.5)}
+/* ════════════════════════════════════════════════════════════════
+   TEMA PORTLAND — logo originale (logo.svg, mai alterato), Arial,
+   nero #1D1D1B + verde ufficiale #ACCD93
+   ════════════════════════════════════════════════════════════════ */
+.pt-logo{display:block;height:auto;mix-blend-mode:normal!important;opacity:1!important;max-width:none}
+.sidebar-brand .pt-logo{width:196px}
+.mobile-landing .pt-logo{width:220px;margin-bottom:22px}
+.hero .pt-logo{width:104px;margin:0 auto}
+.brand-sep{display:none}
+.sidebar-col{border-right:none;box-shadow:none}
+.sidebar-col::before{display:none}
+/* Viste: pillola verde ufficiale per quella attiva */
+.btn-view.active,.btn-view.active:hover{background:var(--pt-verde);border-color:var(--pt-verde);color:var(--pt-nero)}
+.btn-view.active .btn-view-sub{color:rgba(29,29,27,.7)}
+.mobile-nav-btn .btn-arrow{color:var(--pt-verde);opacity:.8}
+.mobile-landing-sub{color:var(--pt-verde);opacity:.85}
+/* Titoli: Arial bold, niente corsivi serif */
+#wine-list .sezione-titolo{font-weight:700;font-style:normal;letter-spacing:-.01em;text-transform:none}
+.grp-l2{font-weight:700;font-style:normal}
+.ref-nome,.sel-it-nome,.modal-nome{font-weight:700}
+.grp-l1{border-top:none;border-bottom:none}
+/* Stato attivo e selezioni */
+.chip.on,.fresco-toggle.active{background:var(--pt-nero);border-color:var(--pt-nero);color:var(--pt-verde)}
+.sel-btn[aria-pressed="true"],.sel-cta[aria-pressed="true"],.sel-fab{background:var(--pt-verde);border-color:var(--pt-verde);color:var(--pt-nero)}
+.sel-fab .sel-n{background:var(--pt-nero);color:var(--pt-verde)}
+.modal-cat{color:var(--pt-verde)}
+@media(min-width:1024px){.wine-col .page-wrap{box-shadow:none;-webkit-backdrop-filter:none;backdrop-filter:none}}
 </style>
 </head>
 <body>
 
 <!-- ── MOBILE LANDING ── -->
 <div class="mobile-landing" id="mobile-landing">
-    <div class="brand-word mobile-landing-logo">Portland</div>
+    <img class="pt-logo mobile-landing-logo" src="logo.svg" alt="Portland — Bar Tavola Calda">
   <div class="mobile-landing-sub">Carta dei Vini</div>
   <div class="mobile-nav-btns">
     <button class="mobile-nav-btn" onclick="setViewMobile('calice')">
@@ -852,7 +874,7 @@ body.has-sel #sb-status{display:none}
 
   <!-- Brand -->
   <div class="sidebar-brand">
-        <div class="brand-word brand-logo">Portland</div>
+        <img class="pt-logo brand-logo" src="logo.svg" alt="Portland — Bar Tavola Calda">
     <div class="brand-sep"></div>
   </div>
 
@@ -884,7 +906,7 @@ body.has-sel #sb-status{display:none}
   <!-- Hero solo mobile -->
   <div class="hero" id="mobile-hero" style="display:none">
             <div class="hero-inner">
-      <div class="brand-word hero-logo">Portland</div>
+      <img class="pt-logo hero-logo" src="logo.svg" alt="Portland — Bar Tavola Calda">
     </div>
   </div>
 
