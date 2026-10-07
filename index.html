@@ -2,7 +2,7 @@
 <html lang="it">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>Cantina Manager — Portland</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -407,6 +407,97 @@ body{background:var(--bg)}
 ::selection{background:rgba(172,205,147,.35);color:var(--txt)}
 </style>
 
+
+<!-- ══ PORTLAND DESKTOP · tema chiaro salvia (gestionale) ══ -->
+<style id="portland-desktop">
+:root{
+  --pt-sage:#ACCD93;--pt-sage-d:#8DB572;--pt-sage-l:#D6E6C9;--pt-ink:#1D1D1B;--pt-paper:#F4F6EF;
+  --bg:#F4F6EF;--bg2:#FFFFFF;--bg3:#EAF0E3;--border:#DCE4D3;--border2:#C7D4BA;
+  --txt:#1D1D1B;--txt2:#2B2B28;--txt3:#5B6653;--txt4:#7A8571;--txt5:#9AA391;
+  --amber:#4F7A37;--amber2:#3F662B;--amber3:#335421;--amber4:#E3EEDA;
+  --amber-rgb:79,122,55;--amber3-rgb:51,84,33;--amber-glow:0 0 0 3px rgba(172,205,147,.55);
+  --accent:#1D1D1B;--accent2:#000;
+  --green:#3D7A2E;--blue:#2D5F8B;--red:#B8432F;--orange:#B07A12;
+  --glass:rgba(255,255,255,.92);--glass-border:rgba(29,29,27,.10);
+  --shadow-sm:0 1px 3px rgba(29,29,27,.08);--shadow-md:0 4px 14px rgba(29,29,27,.10);--shadow-lg:0 10px 30px rgba(29,29,27,.14);
+  --font-serif:'Fraunces',Georgia,serif;
+  color-scheme:light;
+}
+html,body{background:var(--bg)!important;color:var(--txt)}
+::selection{background:rgba(172,205,147,.6);color:var(--pt-ink)}
+/* sidebar: il colore dell'adesivo, logo vero al posto dell'icona */
+#sidebar{background:var(--pt-sage)!important;border-right:2px solid var(--pt-ink)!important;box-shadow:none!important;color:var(--pt-ink);backdrop-filter:none!important;-webkit-backdrop-filter:none!important}
+#sidebar .sidebar-logo{padding:16px 12px 10px!important;text-align:center;border-bottom:2px solid var(--pt-ink)!important}
+#sidebar .sidebar-logo h1{display:block!important;width:120px;height:120px;margin:0 auto!important;font-size:0!important;background:url("carta/logo.svg") center/contain no-repeat}
+#sidebar .sidebar-logo h1 *{display:none!important}
+#sidebar .sidebar-logo>p{color:var(--pt-ink)!important;opacity:.75;letter-spacing:.14em;font-size:11px!important;margin-top:6px!important;padding-left:0!important;font-family:var(--font-sans)!important;font-style:normal!important;font-weight:600}
+#sidebar.collapsed .sidebar-logo h1{width:36px;height:36px}
+#sidebar .nav-btn{color:var(--pt-ink)!important;border-radius:999px!important;border-left:0!important;margin:2px 10px!important;width:calc(100% - 20px)!important;font-weight:600;font-size:13px}
+#sidebar .nav-btn .nav-icon{color:var(--pt-ink)!important}
+#sidebar .nav-btn:hover{background:rgba(29,29,27,.08)!important}
+#sidebar .nav-btn.active{background:var(--pt-ink)!important;color:var(--pt-sage)!important}
+#sidebar .nav-btn.active .nav-icon{color:var(--pt-sage)!important}
+#sidebar.collapsed .nav-btn{margin:2px 6px!important;width:calc(100% - 12px)!important}
+#sidebar .nav-sep{background:rgba(29,29,27,.25)!important}
+#sidebar button,#sidebar #db-label,#sidebar #sidebar-toggle-btn{color:var(--pt-ink)!important}
+#sidebar #sidebar-toggle-btn{border-top-color:rgba(29,29,27,.25)!important}
+#sidebar>div[style*="border-top"]{border-top:2px solid var(--pt-ink)!important}
+/* testata e titoli */
+#topbar{background:rgba(244,246,239,.94)!important;border-bottom:2px solid var(--pt-ink)!important}
+#topbar-title{font-family:var(--font-serif)!important;font-weight:800!important;font-size:24px!important;color:var(--pt-ink)!important;letter-spacing:-.01em;font-variation-settings:'SOFT' 100}
+#app h2,.modal h2{font-family:var(--font-serif)!important;font-weight:700!important;color:var(--pt-ink)!important;font-variation-settings:'SOFT' 100}
+/* card "adesivo": bordo inchiostro + ombra piena */
+.card,.kpi-card{background:var(--bg2)!important;border:1.5px solid var(--pt-ink)!important;border-radius:16px!important;box-shadow:3px 3px 0 var(--pt-ink)!important}
+.kpi-card.kpi-compact{border-width:1px!important;box-shadow:2px 2px 0 var(--pt-ink)!important;border-radius:12px!important}
+.modal{background:var(--bg2)!important;border:1.5px solid var(--pt-ink)!important;box-shadow:5px 5px 0 var(--pt-ink)!important}
+.modal-header{background:var(--pt-sage-l)!important;border-bottom:1.5px solid var(--pt-ink)!important}
+.modal-footer{background:var(--bg)!important}
+.modal-backdrop{background:rgba(29,29,27,.45)!important}
+/* tabelle */
+table{background:var(--bg2)}
+th,thead th{background:var(--pt-sage-l)!important;color:var(--pt-ink)!important;border-bottom:1.5px solid var(--pt-ink)!important}
+td{border-color:var(--border)!important;color:var(--txt)}
+tbody tr:hover td{background:#F7FAF3!important}
+tr.alert-low td{background:rgba(176,122,18,.07)!important}
+tr.alert-riordino td{background:rgba(176,122,18,.035)!important}
+tfoot td{background:var(--bg3)!important}
+/* campi e pulsanti */
+input,select,textarea{background:#fff!important;color:var(--txt)!important;border:1.5px solid var(--border2)!important}
+input:focus,select:focus,textarea:focus{border-color:var(--pt-ink)!important;box-shadow:0 0 0 3px rgba(172,205,147,.55)!important;outline:none}
+#inv-filter-bar select,#inv-filter-bar select:focus{background:transparent!important;border:none!important;box-shadow:none!important}
+.btn-primary{background:var(--pt-ink)!important;color:var(--pt-sage)!important;border:none!important;border-radius:999px!important}
+.btn-primary:hover{background:#000!important}
+.btn-outline,.cm-chip,.filter-btn{border-color:var(--border2)}
+.cm-seg{background:var(--bg3)!important}.cm-seg button.active{background:var(--bg2)!important;color:var(--pt-ink)!important;box-shadow:0 1px 0 var(--pt-ink)}
+.cm-chip.active,.filter-btn.active{background:var(--pt-ink)!important;color:var(--pt-sage)!important;border-color:var(--pt-ink)!important}
+.ssp-qty{background:#fff!important}
+.cm-actionbar{background:var(--pt-sage-l)!important;border-top:1.5px solid var(--pt-ink)!important}
+#notif.ok{background:var(--pt-ink)!important;color:var(--pt-sage)!important;border-color:var(--pt-ink)!important}
+.badge-Rosso{background:#F5E6E9!important;color:#8E2B3D!important;border-color:#E2C2CA!important}
+.badge-Bianco{background:#F3EFD9!important;color:#7A6514!important;border-color:#E0D7A8!important}
+.badge-Spumante{background:#E4EFF5!important;color:#2D5F8B!important;border-color:#C2D8E6!important}
+.badge-Rosato{background:#F8E6EC!important;color:#A33A62!important;border-color:#EBC5D3!important}
+.badge-Naturale,.badge-Orange,.badge-Passito,.badge-Liquoroso,.badge-Dolce{filter:saturate(.8) brightness(.85)}
+::-webkit-scrollbar-thumb{background:var(--border2);border-radius:8px}
+/* colori inline ereditati dal tema scuro → versioni leggibili su carta */
+[style*="#30D158"],[style*="#30d158"],[style*="#34C759"]{color:#3D7A2E!important}
+[style*="#007AFF"],[style*="#007aff"],[style*="#5AC8FA"],[style*="#3b82f6"],[style*="#60a5fa"]{color:#2D5F8B!important}
+[style*="#FF453A"],[style*="#ff453a"],[style*="#FF6B6B"],[style*="#ff6b6b"],[style*="#ef4444"],[style*="#dc2626"]{color:#B8432F!important}
+[style*="#FF9F0A"],[style*="#ff9f0a"],[style*="#fbbf24"],[style*="#fb923c"],[style*="#FFD60A"]{color:#B07A12!important}
+[style*="background:#30D158"],[style*="background: #30D158"]{background:#3D7A2E!important;color:#fff!important}
+[style*="rgba(28,28,30"]{background:var(--bg3)!important}
+/* iPad orizzontale / schermi stretti: sidebar piu' snella, bersagli comodi */
+@media(max-width:1200px){
+  #sidebar:not(.collapsed){width:192px}#main:not(.sidebar-collapsed){margin-left:192px}
+  #sidebar .sidebar-logo h1{width:96px;height:96px}
+  #content{padding:18px}
+}
+@media(pointer:coarse){
+  .inv-table td{padding-top:9px;padding-bottom:9px}
+  .btn-outline,.btn-primary{min-height:40px}
+}
+</style>
+
 <!-- ══ PORTLAND MOBILE · tema chiaro salvia (attivo solo in vista mobile) ══ -->
 <style id="portland-mobile">
 html:has(#mob-screen[style*="flex"]){
@@ -445,6 +536,15 @@ html:has(#mob-screen[style*="flex"]) body{background:var(--sal-50);color:var(--i
 .mob-confirm-btn:active{background:var(--sal-900)!important;transform:scale(.94)}
 .mob-acc-header{background:var(--sal-100)!important}
 .db-dot.ok{background:var(--green)!important}
+.mob-acc-title{font-size:11px;letter-spacing:.12em}
+.mob-wine-sub,.mob-stor-meta,.mob-acc-meta{font-size:12px}
+#mob-search{font-size:16px}
+@media(min-width:700px){
+  #mob-topbar,#mob-tab-bar,#mob-log,#mob-list,#mob-storico-list{padding-left:max(16px,calc((100% - 760px)/2))!important;padding-right:max(16px,calc((100% - 760px)/2))!important}
+  .mob-wine-name,.mob-stor-name{font-size:15px}
+  .mob-wine-row,.mob-stor-row{padding-top:13px;padding-bottom:13px}
+  #mob-toast{left:50%!important;right:auto!important;width:min(736px,calc(100% - 32px));margin-left:calc(min(736px,calc(100% - 32px))/-2)}
+}
 </style>
 </head>
 <body>
@@ -682,7 +782,7 @@ html:has(#mob-screen[style*="flex"]) body{background:var(--sal-50);color:var(--i
     }catch(e){ /* storage off: si configura dal pannello Impostazioni */ }
   })();
 </script>
-<script src="manager.js?v=20261003a"></script>
+<script src="manager.js?v=20261007a"></script>
 
 <!-- NOTE VELOCE MODAL -->
 <div class="modal-backdrop hidden" id="note-veloce-backdrop" onclick="closeNoteVeloce(event)">
