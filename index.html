@@ -769,7 +769,10 @@ html:has(#mob-screen[style*="flex"]) body{background:var(--sal-50);color:var(--i
     // e non sarebbero confrontabili con gli altri due locali.
     serviziGiorno:       { 2:2, 3:2, 4:2, 5:2, 6:2 },
     // Calici sempre in euro tondi, arrotondati per eccesso (9,50 -> 10).
-    arrotondaCalice:     true
+    arrotondaCalice:     true,
+    // Login con email; ruolo da app_metadata.role, fallback authAdmins.
+    authEmail:           true,
+    authAdmins:          ["rossguidi90@gmail.com"]
   };
 </script>
 <!-- ── BOOTSTRAP PORTLAND ───────────────────────────────────────────────────
