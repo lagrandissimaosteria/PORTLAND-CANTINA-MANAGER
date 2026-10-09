@@ -962,10 +962,16 @@ var(--pt-nero);
     sbUrl:      "https://ixhxkqhggskmfdbzbdii.supabase.co",
     sbKey:      "sb_publishable_XahUMQq5VMlOfo3xYFiPUQ_3sMR7wzW",
     dbUser:     "portland",
-    paeseOrder: ["Italia","Francia"]
+    paeseOrder: ["Italia","Francia"],
+    // Fuori inventario: alla spina, solo al calice.
+    extra: [
+      { id:"extra-sfuso-buono", nome:"Sfuso Buono Portland", produttore:"Portland",
+        tipologia:"Metodo Charmat", vitigni:"Glera", nazione:"Italia", regione:"Veneto",
+        zona:"Alla spina", prezzoCalice:5 }
+    ]
   };
 </script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
-<script src="carta.js?v=20260925c"></script>
+<script src="carta.js?v=20261009a"></script>
 </body>
 </html>

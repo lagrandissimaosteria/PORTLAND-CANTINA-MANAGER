@@ -8,7 +8,8 @@ var _CFG=(function(){
     sbKey:      "sb_publishable_FnsZcIMLdfbaABqmwx3I2A_rXfRmHhY",
     dbUser:     "default",
     mescitaMax: 45,                    // tetto € vista "Carta Breve"
-    paeseOrder: ["Italia","Francia"]   // paesi in testa, il resto alfabetico
+    paeseOrder: ["Italia","Francia"],  // paesi in testa, il resto alfabetico
+    extra:      []                     // voci fuori inventario (es. vino alla spina), stesso schema di cm_wines
   };
   var O=(typeof window!=="undefined"&&window.CARTA_CONFIG&&typeof window.CARTA_CONFIG==="object"&&!Array.isArray(window.CARTA_CONFIG))?window.CARTA_CONFIG:{};
   var out={},k;
@@ -271,6 +272,10 @@ async function loadWines(){
   var _regCanon={};
   var wines=await _fetchWinesRaw();
   wines=wines.filter(function(w){ return (w.giacenza||0)>0; });
+  // Voci fuori inventario da CARTA_CONFIG.extra: niente giacenza, sempre in carta.
+  (Array.isArray(_CFG.extra)?_CFG.extra:[]).forEach(function(x,i){
+    if(x&&x.nome) wines.push(Object.assign({id:"extra-"+i,giacenza:0},x));
+  });
   var d={}; CAT_ORDER.forEach(function(t){ d[t]=[]; });
   wines.forEach(function(w){
     var rawTipo=w.tipologia||"Altro";
@@ -303,7 +308,8 @@ async function loadWines(){
       formato:fmt!==0.75?fmt:null,
       qty:w.giacenza||0,
       note:w.noteVeloce||w.note||"",
-      _p:pNum
+      _p:pNum,
+      _soloCalice:!pNum&&pCalice>0&&String(w.id).indexOf("extra-")===0
     });
   });
   catConfig=CAT_ORDER.filter(function(t){ return d[t]&&d[t].length>0; })
@@ -398,7 +404,7 @@ function _getViewFilteredWines(cat){
     if(cat==='AltriFormati') return wines.filter(function(w){ return w.prezzo_carta>0; });
     return wines.filter(function(w){ return w.prezzo_carta>0&&w.prezzo_carta<=MESCITA_MAX_PREZZO; });
   }
-  return wines; // 'cantina': tutti
+  return wines.filter(function(w){ return !w._soloCalice; }); // 'cantina': tutti (le voci solo-calice fuori inventario restano nella vista calice)
 }
 
 // ── FUZZY SEARCH CONDIVISO (identico a manager.js, senza SKU lato pubblico) ──
