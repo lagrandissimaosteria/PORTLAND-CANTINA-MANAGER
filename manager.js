@@ -3480,7 +3480,9 @@ function _plServizi(daISO,aISO){
   const extra=CONFIG.serviziGiorno||{};
   let n=0, d=_parseD(daISO); const fine=_parseD(aISO);
   while(d<=fine){ const wd=d.getDay();
-    if(apert.has(wd) && !_isChiuso(_isoD(d))) n+=(parseInt(extra[wd])||1);
+    const iso=_isoD(d), sd=CONFIG.serviziData||{};
+    // serviziData {"YYYY-MM-DD":n}: override puntuale (es. soft opening a servizio singolo)
+    if(!_isChiuso(iso)){ if(sd[iso]!=null) n+=(parseInt(sd[iso])||0); else if(apert.has(wd)) n+=(parseInt(extra[wd])||1); }
     d=_shiftD(d,1); }
   return n;
 }
@@ -5686,7 +5688,6 @@ function renderOrdini(){
       <span>${ic("clipboard")} Ordini Fornitore (${ordiniAttivi.length} aperti, ${ordiniAttesa.length} in attesa)</span>
       <div style="display:flex;gap:8px">
         ${selMode!=='ordini'?`<button class="btn-outline btn-sm" onclick="enterSel('ordini')" style="border-color:rgba(59,130,246,.5);color:#93c5fd">${ic("checkCircle")} Selezione multipla</button>`:''}
-        <button class="btn-outline btn-sm" onclick="_pulisciDateOrdiniImportati()" title="Rimuove date arrivo/carico errate dagli ordini importati" style="border-color:rgba(255,69,58,.3);color:#FF453A;font-size:11px">${ic("sparkle")} Pulisci date import</button>
         <button class="btn-primary" onclick="apriOrdineModal(null)">${ic("plus")} Nuovo Ordine</button>
       </div>
     </div>
