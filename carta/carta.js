@@ -140,7 +140,7 @@ function _pgEsc(s){ return String(s).replace(/'/g,"''"); }
 
 async function _fetchWinesRaw(){
   if(!_useRestFallback && _sb){
-    var r=await _sb.from("cm_wines").select("data").eq("user_id",DB_USER);
+    var r=await _sb.from("cm_carta").select("data").eq("user_id",DB_USER);
     if(r.error) throw r.error;
     if(!r.data||!r.data.length) return [];
     if(r.data.length===1) return r.data[0].data||[];
@@ -153,7 +153,7 @@ async function _fetchWinesRaw(){
     });
   } else {
     // REST path: rimuove limit=1 per recuperare eventuali righe multiple
-    var url=SB_URL+"/rest/v1/cm_wines?select=data&user_id=eq."+encodeURIComponent(_pgEsc(DB_USER));
+    var url=SB_URL+"/rest/v1/cm_carta?select=data&user_id=eq."+encodeURIComponent(_pgEsc(DB_USER));
     var resp=await fetch(url,{headers:{"apikey":SB_KEY,"Authorization":"Bearer "+SB_KEY,"Accept":"application/json"}});
     if(!resp.ok){ var errText=await resp.text(); throw new Error("HTTP "+resp.status+": "+errText); }
     var rows=await resp.json();
@@ -331,7 +331,7 @@ async function _sbListen(){
   if(_useRestFallback||!_sb) return;
   try{
     _sb.channel("cm-wines-changes")
-      .on("postgres_changes",{event:"*",schema:"public",table:"cm_wines"},function(){
+      .on("postgres_changes",{event:"*",schema:"public",table:"cm_carta"},function(){
         _setStatus("sync");
         loadWines().then(function(d){ db=d; _buildIdxById(); applyFilters(); buildSidebar(); _setStatus("ok"); }).catch(function(){ _setStatus("err"); });
       }).subscribe();
