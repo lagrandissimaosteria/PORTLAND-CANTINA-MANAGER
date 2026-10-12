@@ -13,6 +13,10 @@
 var bar = [], _barBase = [], _barTableOk = true;
 var barUi = { tab:"riepilogo", per:"mese", da:"", a:"", cat:"tutte", q:"", contaData:"" };
 const BAR_CAUSALI = ["Staff","Omaggio cliente","Cucina","Rottura / perdita","Degustazione","Altro"];
+// Opzioni per locale da window.CM_CONFIG: barFusti (false = niente spina/fusti), barPrezzi ({cat: € IVA incl.} prezzo di vendita di default)
+const _barCfg = k => (typeof CONFIG!=="undefined" && CONFIG && CONFIG[k]!==undefined) ? CONFIG[k] : undefined;
+const _barFusti = () => _barCfg("barFusti")!==false;
+const _barPrezzoDef = cat => parseFloat((_barCfg("barPrezzi")||{})[cat])||0;
 const BAR_UNITA = { dose:"Dose", bicchiere:"Bicchiere", bottiglia:"Bottiglia", pezzo:"Pezzo" };
 // Scheda prodotto per categoria: come si vende e come si conta
 const BAR_SCHEDA = {
@@ -68,7 +72,7 @@ function _barDefaults(cat, tipo, formato){
   if(cat==="kegvino") return { unita:"bicchiere", dosecl:15, dosi: f? Math.round(f/0.15*10)/10 : 133.3 };
   if(cat==="kegcocktail") return { unita:"bicchiere", dosecl:12, dosi: f? Math.round(f/0.12*10)/10 : 166.7 };
   if(cat==="spirits") return { unita:"dose", dosecl:4, dosi: f? Math.round(f/0.04*10)/10 : 17.5 };
-  if(tipo==="Fusto" || (cat==="birre" && f>=5)) return { unita:"bicchiere", dosecl:40, dosi: f? Math.round(f/0.4*10)/10 : 50 };
+  if(_barFusti() && (tipo==="Fusto" || (cat==="birre" && f>=5))) return { unita:"bicchiere", dosecl:40, dosi: f? Math.round(f/0.4*10)/10 : 50 };
   if(cat==="birre") return { unita:"bottiglia", dosi:1 };
   return { unita:"pezzo", dosi:1 };
 }
@@ -105,7 +109,8 @@ function _barProdotti(){
       id: p?.id || "auto:"+key, saved: !!p, key, cat, tipo, formato,
       nome: p?.nome || ref.nomeVino || "", produttore: p?.produttore ?? ref.produttore ?? "",
       fornitore: p?.fornitore || (a? [...a.fornitori].join(", ") : ""),
-      unita: p?.unita || d.unita, dosi: parseFloat(p?.dosi) || d.dosi, prezzo: parseFloat(p?.prezzo)||0,
+      unita: p?.unita || d.unita, dosi: parseFloat(p?.dosi) || d.dosi,
+      prezzoProprio: parseFloat(p?.prezzo)||0, prezzo: parseFloat(p?.prezzo) || _barPrezzoDef(cat),
       dosecl: parseFloat(p?.dosecl) || d.dosecl || 0, uso: p?.uso || "vendita",
       eta: p?.eta ?? ref.eta ?? "", gradazione: p?.gradazione ?? ref.gradazione ?? "",
       costo: parseFloat(p?.costo) || (a&&a.pezzi? a.costo/a.pezzi : 0), // costo medio ponderato a pezzo, IVA incl.
@@ -120,7 +125,7 @@ function _barProdotti(){
 function _barEnsure(p){
   if(p.saved) return p.id;
   const rec = { id:uid(), t:"p", key:p.key, cat:p.cat, nome:p.nome, produttore:p.produttore, formato:p.formato,
-    tipo:p.tipo, unita:p.unita, dosi:p.dosi, dosecl:p.dosecl||0, uso:p.uso||"vendita", eta:p.eta||"", gradazione:p.gradazione||"", prezzo:p.prezzo, costo:0, attivo:true };
+    tipo:p.tipo, unita:p.unita, dosi:p.dosi, dosecl:p.dosecl||0, uso:p.uso||"vendita", eta:p.eta||"", gradazione:p.gradazione||"", prezzo:p.prezzoProprio||0, costo:0, attivo:true };
   bar.push(rec); return rec.id;
 }
 
@@ -332,7 +337,7 @@ function _barProdottiUi(catSel){
   const ix = _barIndex(prods), t = today(), cat = barUi.cat, S = BAR_SCHEDA[cat];
   const th = (l,al) => `<th style="padding:8px;text-align:${al||"left"};font-size:11px;color:var(--txt4);font-weight:500;text-transform:uppercase;letter-spacing:.04em">${l}</th>`;
   const td = (x,st) => `<td style="padding:6px 8px;${st||""}">${x}</td>`;
-  const inp = (p,f,v,step,w) => `<input type="number" class="form-input" style="width:${w||80}px;padding:4px 6px" min="0" step="${step}" value="${v||""}" onchange="barSetProd('${h(p.id)}','${f}',this.value)">`;
+  const inp = (p,f,v,step,w,ph) => `<input type="number" class="form-input" style="width:${w||80}px;padding:4px 6px" min="0" step="${step}" value="${v||""}"${ph?` placeholder="${ph}"`:""} onchange="barSetProd('${h(p.id)}','${f}',this.value)">`;
   const sel = (p,f,opts,cur,w) => `<select class="form-select" style="width:${w||120}px;padding:4px 6px" onchange="barSetProd('${h(p.id)}','${f}',this.value)">${opts.map(([k,l])=>`<option value="${k}" ${cur===k?"selected":""}>${l}</option>`).join("")}</select>`;
   const aDose = p => p.unita==="dose"||p.unita==="bicchiere";
   // Colonne: [intestazione, allineamento, cella(p, cu, mg)]
@@ -345,7 +350,7 @@ function _barProdottiUi(catSel){
     dosecl:["Dose cl","left", p=>td(aDose(p)? inp(p,"dosecl",p.dosecl||"","0.5",64) : `<span style="color:var(--txt4)">—</span>`)],
     resa:  [cat==="kegvino"?"Calici/fusto":(cat==="birre"||cat==="kegcocktail")?"Bicchieri/fusto":"Dosi/bottiglia","right", p=>td(aDose(p)? _barPz(p.dosi) : "1","text-align:right")],
     uso:   ["Uso","left", p=>td(sel(p,"uso",[["vendita","Vendita"],["mixer","Mixer"]],p.uso,110))],
-    prezzo:[S?S.prezzoLbl:"Prezzo unità","left", p=>td(cat==="sodati"&&p.uso==="mixer"? `<span style="color:var(--txt4)">—</span>` : inp(p,"prezzo",p.prezzo,"0.5",80))],
+    prezzo:[S?S.prezzoLbl:"Prezzo unità","left", p=>td(cat==="sodati"&&p.uso==="mixer"? `<span style="color:var(--txt4)">—</span>` : inp(p,"prezzo",p.prezzoProprio,"0.5",80,_barPrezzoDef(p.cat)||""))],
     costo: ["Costo pezzo","left", p=>td(`${inp(p,"costo",p.saved&&bar.find(x=>x.id===p.id)?.costo||"","0.01",80)}<div style="font-size:10px;color:var(--txt4)">${fmt(p.costo)}</div>`)],
     cu:    [cat==="spirits"?"Costo dose":cat==="birre"?"Costo unità":"Costo unità","right", (p,cu)=>td(fmt(cu),"text-align:right")],
     mg:    ["Margine","right", (p,cu,mg)=>td(mg===null?"—":fmtN(mg,0)+"%",`text-align:right;color:${mg===null?"var(--txt4)":mg<65?"var(--orange)":"var(--green)"}`)],
@@ -354,7 +359,7 @@ function _barProdottiUi(catSel){
   };
   const cols = {
     spirits:["prod","forn","dosecl","resa","prezzo","costo","cu","mg","giac","att"],
-    birre:  ["prod","forn","servizio","dosecl","resa","prezzo","costo","cu","mg","giac","att"],
+    birre:  _barFusti()? ["prod","forn","servizio","dosecl","resa","prezzo","costo","cu","mg","giac","att"] : ["prod","forn","prezzo","costo","mg","giac","att"],
     sodati: ["prod","forn","uso","prezzo","costo","mg","giac","att"],
     kegcocktail:["prod","forn","dosecl","resa","prezzo","costo","cu","mg","giac","att"],
     kegvino:["prod","forn","dosecl","resa","prezzo","costo","cu","mg","giac","att"]
@@ -362,7 +367,7 @@ function _barProdottiUi(catSel){
   return `<div class="card" style="margin-bottom:16px"><div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:10px;align-items:end">
       ${catSel}<div><label class="form-label">Cerca</label><input class="form-input" value="${h(barUi.q)}" onchange="barSet('q',this.value)" placeholder="nome, produttore, fornitore"></div>
       <div><button class="btn-outline btn-sm" onclick="barNuovoProd()">+ Prodotto non ordinato</button></div></div>
-    <div style="font-size:12px;color:var(--txt4);margin-top:10px">I prodotti arrivano dagli ordini caricati. ${S? S.hint : "Scegli una categoria per la scheda dedicata (dose spirits, spina/bottiglia birre, vendita/mixer sodati, calice/bicchiere polykeg)."} Il costo è la media ponderata degli acquisti; scrivilo solo per sovrascriverlo.</div></div>
+    <div style="font-size:12px;color:var(--txt4);margin-top:10px">I prodotti arrivano dagli ordini caricati. ${S? (cat==="birre"&&!_barFusti()? "Vendita a bottiglia/lattina: prezzo al pezzo." : S.hint) : "Scegli una categoria per la scheda dedicata (dose spirits, spina/bottiglia birre, vendita/mixer sodati, calice/bicchiere polykeg)."} ${S&&_barPrezzoDef(cat)? `Prezzo di vendita del locale: ${fmt(_barPrezzoDef(cat))}, vale per tutti i prodotti senza un prezzo proprio. `:""}Il costo è la media ponderata degli acquisti; scrivilo solo per sovrascriverlo.</div></div>
     <div class="card" style="overflow-x:auto"><table style="width:100%;border-collapse:collapse;font-size:12.5px;min-width:${cols.length*95}px"><thead><tr>
       ${cols.map(k=>th(C[k][0],C[k][1])).join("")}</tr></thead><tbody>
     ${prods.map(p=>{ const cu = p.dosi? p.costo/p.dosi : 0, mg = p.prezzo&&!(p.cat==="sodati"&&p.uso==="mixer")? (1-cu/p.prezzo)*100 : null;
