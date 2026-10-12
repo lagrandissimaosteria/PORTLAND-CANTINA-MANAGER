@@ -766,6 +766,8 @@ html:has(#mob-screen[style*="flex"]) body{background:var(--sal-50);color:var(--i
     servizioDal:         "",
     servizioIva:         10,
     ivaSomministrazione: 10,
+    // Birre alla spina: due misure (prezzi IVA incl.). La Pils media a 6 € e' impostata sul prodotto.
+    barSpina:            { piccola:{ cl:20, prezzo:4 }, media:{ cl:40, prezzo:7 } },
     // mar–sab, orario continuato 10:00–22:00.
     giorniApertura:      [2,3,4,5,6],
     // 3 servizi al giorno: colazione, pranzo, aperitivo.
@@ -816,7 +818,7 @@ html:has(#mob-screen[style*="flex"]) body{background:var(--sal-50);color:var(--i
   })();
 </script>
 <script src="manager.js?v=20261012keg"></script>
-<script src="bar.js?v=20261012keg2"></script>
+<script src="bar.js?v=20261012spina"></script>
 <script src="cm-update.js" defer></script>
 
 <!-- NOTE VELOCE MODAL -->
