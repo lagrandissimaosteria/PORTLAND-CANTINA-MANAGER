@@ -6437,7 +6437,6 @@ function _renderOrdineModalBody(allFornitori, allProduttori, allNomi){
         <input id="omd-note" class="form-input" value="${h(ordineModalData.note)}" placeholder="es. Ordine per settembre">
       </div>
     </div>
-    ${_isBar(ordineModalData)?`<div style="margin:-8px 0 16px;padding:8px 12px;font-size:12px;border:1px solid rgba(${ORD_CAT[_ordCat(ordineModalData)].rgb},.35);color:var(--txt2)">Ordine <b>${h(ORD_CAT[_ordCat(ordineModalData)].label)}</b>: viene registrato solo come acquisto (storico ordini, fatture, spesa fornitore). Alla ricezione non crea schede in magazzino e non compare in carta.</div>`:""}
     <!-- Referenze -->
     <div class="modal-section-label">${ic("bottle")} Referenze dell'ordine</div>
     <div class="cm-grid-wrap">
